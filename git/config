@@ -1,0 +1,13 @@
+[user]
+	name = Luiz Schonarth
+	email = luizcschonarth@gmail.com
+
+[core]
+	editor = nvim
+
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+
