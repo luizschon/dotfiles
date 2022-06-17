@@ -10,10 +10,10 @@ create_backup () {
 }
 
 link_file() {
-	$filename=$(basename $1)
-	$base_path=$(realpath $1)
-	$target_path=$(realpath $2)
-	ln -sfb $base_path $target_path && echo "Linked $filename to $target_path"
+	filename=$(basename $1)
+	base_path=$(realpath $1)
+	target_path=$(realpath $2)
+	ln -sf $base_path $target_path && echo "Linked $filename to $target_path"
 	echo ""
 }
 
@@ -38,7 +38,7 @@ find -L -regex ".*\.sh" -exec chmod +x {} \;
 
 # Link directories to .config dir
 link_dir_to_config "zsh"
-link_file ".zshenv" $HOME # Links .zshenv file to home folder
+link_file ".zshenv" ${HOME} # Links .zshenv file to home folder
 link_dir_to_config "kitty"
 link_dir_to_config "i3"
 link_dir_to_config "polybar"
