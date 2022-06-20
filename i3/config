@@ -186,8 +186,21 @@ default_floating_border normal 0
 
 gaps inner 17
 
+# Makes Picture-In-Picture firefox player sticky
 for_window [window_role="PictureInPicture"] sticky enable, border pixel 0
+
+# Enable floating windows
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="nm-applet"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
+
+# Handles automatic floating windows for kitty.
+# You can remove this part if your terminal can't handle arguments to
+# set window propreties (title, class, instance, etc) and opt to use
+# the float_w_runner.sh script.
+for_window [class="Alacritty" title="floating terminal"] floating enable
+
+# Resizes every kitty floating window to be consistent while
+# toggling between tiling and floating.
+for_window [floating class="Alacritty"] resize set 41 ppt 50 ppt
