@@ -6,8 +6,6 @@ setopt autocd notify
 unsetopt beep
 bindkey -e
 
-zstyle :compinstall filename '/home/luizschon/.zshrc'
-
 autoload -Uz compinit
 compinit
 
@@ -17,8 +15,7 @@ compinit
 # Not supported in the "fish" shell.
 (cat ~/.cache/wal/sequences &)
 
-# Alternative (blocks terminal for 0-3ms)
-cat ~/.cache/wal/sequences
-
 # To add support for TTYs this line can be optionally added.
 source ~/.cache/wal/colors-tty.sh
+
+eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
