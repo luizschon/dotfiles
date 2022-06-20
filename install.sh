@@ -13,7 +13,7 @@ link_file() {
 	filename=$(basename $1)
 	base_path=$(realpath $1)
 	target_path=$(realpath $2)
-	ln -sf $base_path $target_path && echo "Linked $filename to $target_path"
+	ln -sfb $base_path $target_path && echo "Linked $filename to $target_path"
 	echo ""
 }
 
@@ -28,7 +28,7 @@ link_dir_to_config() {
 	fi
 
 	cd $CONFIG_PATH
-	ln -sT $base_dir ./$dir_name && echo "Linked $dir_name config to $target_dir"
+	ln -sfT $base_dir ./$dir_name && echo "Linked $dir_name config to $target_dir"
 	echo ""
 	cd $SCRIPT_PATH
 }
@@ -37,8 +37,10 @@ link_dir_to_config() {
 find -L -regex ".*\.sh" -exec chmod +x {} \;
 
 # Link directories to .config dir
-link_dir_to_config "zsh"
+link_file ".xprofile" ${HOME} # Links .xprofile file to home folder
 link_file ".zshenv" ${HOME} # Links .zshenv file to home folder
+link_dir_to_config "zsh"
+link_dir_to_config "alacritty"
 link_dir_to_config "kitty"
 link_dir_to_config "i3"
 link_dir_to_config "polybar"
