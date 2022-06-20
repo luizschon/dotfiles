@@ -1,1 +1,2 @@
 export TERMINAL=alacritty
+export I3_SCRIPTS=~/.config/i3/scripts

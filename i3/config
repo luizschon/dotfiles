@@ -31,7 +31,7 @@ exec --no-startup-id blueman-applet
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --no-startup-id $HOME/.config/i3/scripts/theme.sh
+exec --no-startup-id $I3_SCRIPTS/theme.sh
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Use pactl to adjust volume in PulseAudio.
