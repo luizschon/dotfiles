@@ -48,7 +48,7 @@ floating_modifier $mod
 bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 # Start a floating terminal
-bindsym $mod+Return exec i3-sensible-terminal --title "floating terminal"
+bindsym $mod+Return exec i3-sensible-terminal --title "Floating Terminal"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -196,11 +196,8 @@ for_window [class="nm-applet"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 
 # Handles automatic floating windows for kitty.
-# You can remove this part if your terminal can't handle arguments to
-# set window propreties (title, class, instance, etc) and opt to use
-# the float_w_runner.sh script.
-for_window [class="Alacritty" title="floating terminal"] floating enable
+for_window [class="Alacritty" title="Floating Terminal"] floating enable
 
 # Resizes every kitty floating window to be consistent while
 # toggling between tiling and floating.
-for_window [floating class="Alacritty"] resize set 41 ppt 50 ppt
+exec --no-startup-id $I3_SCRIPTS/set_floating_size.py -m ppt -w 44 -h 51 Alacritty
