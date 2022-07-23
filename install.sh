@@ -17,6 +17,15 @@ link_file() {
 	echo ""
 }
 
+link_dir() {
+	dirname=$(basename $1)
+	base_path=$(realpath $1)
+	target_path=$(realpath $2)
+	ln -sfb $base_path $target_path && echo "Linked $dirname to $target_path"
+	echo ""
+}
+}
+
 link_dir_to_config() {
 	dir_name=$(basename $1)
 	base_dir=$(realpath $1)
@@ -37,8 +46,10 @@ link_dir_to_config() {
 find -L -regex ".*\.sh" -exec chmod +x {} \;
 
 # Link directories to .config dir
-link_file ".xprofile" ${HOME} # Links .xprofile file to home folder
-link_file ".zshenv" ${HOME} # Links .zshenv file to home folder
+link_file ".xprofile" ${HOME}   # Links .xprofile file to home folder
+link_file ".zshenv" ${HOME}	    # Links .zshenv file to home folder
+link_file ".Xresource" ${HOME}  # Links .Xresourse file to home folder
+link_dir  ".icons" ${HOME}		# Links .icons file to home folder
 link_dir_to_config "zsh"
 link_dir_to_config "alacritty"
 link_dir_to_config "kitty"
@@ -46,6 +57,10 @@ link_dir_to_config "i3"
 link_dir_to_config "polybar"
 link_dir_to_config "rofi"
 link_dir_to_config "picom"
+link_dir_to_config "wal"
+link_dir_to_config "nvim"
+link_dir_to_config "gtk-3.0"
+link_dir_to_config "fontconfig"
 
 . "${SCRIPT_PATH}/gituser.conf"
 
