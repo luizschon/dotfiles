@@ -6,24 +6,32 @@ CONFIG_PATH="$HOME/.config"
 create_backup () {
 	dir=$(basename $1)
 	parent_dir=$(dirname $1)
-	mv $1 ${parent_dir}/~${dir}
+	mv $1 ${parent_dir}/${dir}~
 }
 
 link_file() {
 	filename=$(basename $1)
 	base_path=$(realpath $1)
 	target_path=$(realpath $2)
-	ln -sfb $base_path $target_path && echo "Linked $filename to $target_path"
+	ln -sf $base_path $target_path && echo "Linked $filename to $target_path"
 	echo ""
 }
 
 link_dir() {
-	dirname=$(basename $1)
-	base_path=$(realpath $1)
+	dir_name=$(basename $1)
+	base_dir=$(realpath $1)
 	target_path=$(realpath $2)
-	ln -sfb $base_path $target_path && echo "Linked $dirname to $target_path"
+	target_dir=${target_path}/${dir_name}
+
+	if [ -d $target_dir ]; then
+		echo "Target directory already exists! Creating backup and removing"
+		create_backup $target_dir
+	fi
+
+	cd $target_path
+	ln -sfT $base_dir ./$dir_name && echo "Linked $dir_name config to $target_dir"
 	echo ""
-}
+	cd $SCRIPT_PATH
 }
 
 link_dir_to_config() {
@@ -45,6 +53,8 @@ link_dir_to_config() {
 # Turn every bash script inside the .dotfiles directory executable
 find -L -regex ".*\.sh" -exec chmod +x {} \;
 
+pip install i3ipc
+
 # Link directories to .config dir
 link_file ".xprofile" ${HOME}   # Links .xprofile file to home folder
 link_file ".zshenv" ${HOME}	    # Links .zshenv file to home folder
@@ -61,6 +71,7 @@ link_dir_to_config "wal"
 link_dir_to_config "nvim"
 link_dir_to_config "gtk-3.0"
 link_dir_to_config "fontconfig"
+link_dir_to_config "zathura"
 
 . "${SCRIPT_PATH}/gituser.conf"
 
