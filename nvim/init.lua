@@ -18,9 +18,9 @@ require('packer').startup(function(use)
   use 'nvim-treesitter/nvim-treesitter-textobjects'                               --  Additional textobjects for treesitter
   use 'neovim/nvim-lspconfig'                                                     -- Collection of configurations for built-in LSP client
   use 'williamboman/nvim-lsp-installer'                                           -- Automatically install language servers to stdpath
+  use "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
   use { 'hrsh7th/nvim-cmp', requires = { 'hrsh7th/cmp-nvim-lsp' } }               -- Autocompletion
   use { 'L3MON4D3/LuaSnip', requires = { 'saadparwaiz1/cmp_luasnip' } }           -- Snippet Engine and Snippet Expansion
-  use 'mjlbach/onedark.nvim'                                                      -- Theme inspired by Atom
   use { 'AlphaTechnolog/pywal.nvim', as = 'pywal' }                               -- Theme using pywal generated colorscheme
   use 'nvim-lualine/lualine.nvim'                                                 -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim'                                       -- Add indentation guides even on blank lines
@@ -59,37 +59,36 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
-
--- Set highlight on search
-vim.o.hlsearch = false
-
--- Make line numbers default
-vim.wo.number = true
-
--- Enable mouse mode
-vim.o.mouse = 'a'
-
--- Enable break indent
+vim.o.hlsearch = false                              -- Set highlight on search
+vim.o.mouse = 'a'                                   -- Enable mouse mode
 vim.o.breakindent = true
+vim.o.undofile = true                               -- Save undo history
+vim.o.ignorecase = true                             -- Case insensitive searching UNLESS /C or capital in search
+vim.o.smartcase = true                              -- Smartcase
+vim.o.updatetime = 250                              -- Decrease update time
+vim.o.completeopt = 'menuone,noselect'              -- Set completeopt to have a better completion experience
+vim.o.fileencoding = "utf-8"
+vim.o.swapfile = false                              -- Disable annoying and SSD destroying swapfiles
+vim.o.backup = false
+vim.o.cmdheight = 2                                 -- Increase neovim's command line height to have more space for displaying messages
+vim.o.clipboard = "unnamedplus"
+vim.o.smartindent = true
+-- vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.cursorline = true
+vim.o.scrolloff = 10
+vim.o.sidescrolloff = 10
+vim.o.wrap = false                                  -- Disable text wrap
 
--- Save undo history
-vim.o.undofile = true
-
--- Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
--- Decrease update time
-vim.o.updatetime = 250
+-- See `:help vim.wo`
+vim.wo.number = true                                -- Make line numbers default
+vim.wo.relativenumber = true                        -- Make line numbers relative to current cursor position
 vim.wo.signcolumn = 'yes'
 
--- Set colorscheme
-vim.o.termguicolors = true
 -- vim.cmd [[colorscheme onedark]]
 vim.cmd [[colorscheme pywal]]
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.cmd [[set expandtab]]
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
@@ -122,7 +121,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require('lualine').setup {
   options = {
     icons_enabled = false,
-    -- theme = 'onedark',
     theme = 'pywal-nvim',
     component_separators = '|',
     section_separators = '',
@@ -313,6 +311,15 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+local lsp_lines = require('lsp_lines')
+lsp_lines.setup()
+
+vim.keymap.set('n', '<leader>td', lsp_lines.toggle, { desc = 'Toggle lsp_lines' })
+
+vim.diagnostic.config({
+  virtual_text = false,
+})
+
 -- Example custom configuration for lua
 --
 -- Make runtime files discoverable to the server
@@ -382,7 +389,7 @@ cmp.setup {
   },
 }
 
-vim.api.nvim_set_option("clipboard","unnamedplus")
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
