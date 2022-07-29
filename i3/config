@@ -191,6 +191,7 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="nm-applet"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
+for_window [class="Steam" title="Friends List"] floating enable
 
 # Handles automatic floating windows for applications on startup.
 for_window [class="Alacritty" title="Floating Terminal"] floating enable
