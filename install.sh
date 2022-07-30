@@ -56,10 +56,11 @@ find -L -regex ".*\.sh" -exec chmod +x {} \;
 pip install i3ipc
 
 # Link directories to .config dir
-link_file ".xprofile" ${HOME}   # Links .xprofile file to home folder
-link_file ".zshenv" ${HOME}	    # Links .zshenv file to home folder
-link_file ".Xresource" ${HOME}  # Links .Xresourse file to home folder
-link_dir  ".icons" ${HOME}		# Links .icons file to home folder
+link_file ".xprofile" ${HOME}			   # Links .xprofile file to home folder
+link_file ".zshenv" ${HOME}				   # Links .zshenv file to home folder
+link_file ".Xresource" ${HOME}			   # Links .Xresourse file to home folder
+link_file "gpg-agent.conf" ${HOME}/.gnupg  # Links .Xresourse file to home folder
+link_dir  ".icons" ${HOME}				   # Links .icons file to home folder
 link_dir_to_config "zsh"
 link_dir_to_config "alacritty"
 link_dir_to_config "kitty"
