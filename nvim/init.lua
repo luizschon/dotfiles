@@ -26,6 +26,7 @@ require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim'                                       -- Add indentation guides even on blank lines
   use 'tpope/vim-sleuth'                                                          -- Detect tabstop and shiftwidth automatically
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } } -- Fuzzy Finder (files, lsp, etc)
+  use 'glepnir/dashboard-nvim'
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable "make" == 1 }
@@ -59,6 +60,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+vim.o.guifont = 'Cascadia Code:h10'
 vim.o.hlsearch = false                              -- Set highlight on search
 vim.o.mouse = 'a'                                   -- Enable mouse mode
 vim.o.breakindent = true
@@ -135,6 +137,7 @@ require('Comment').setup()
 require('indent_blankline').setup {
   char = '⋅',
   show_trailing_blankline_indent = false,
+  filetype_exclude = { "dashboard" }
 }
 
 -- Gitsigns
