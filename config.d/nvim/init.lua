@@ -75,7 +75,7 @@ vim.o.backup = false
 vim.o.cmdheight = 2                                 -- Increase neovim's command line height to have more space for displaying messages
 vim.o.clipboard = "unnamedplus"
 vim.o.smartindent = true
--- vim.o.expandtab = true
+vim.o.expandtab = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.cursorline = true
@@ -300,7 +300,15 @@ end
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Enable the following language servers
-local servers = { 'clangd', 'rust_analyzer', 'pyright', 'tsserver', 'sumneko_lua', 'bashls' }
+local servers = {
+  'clangd',
+  'rust_analyzer',
+  'pyright',
+  'tsserver',
+  'sumneko_lua',
+  'bashls',
+  'cmake',
+}
 
 -- Ensure the servers above are installed
 require('nvim-lsp-installer').setup {
