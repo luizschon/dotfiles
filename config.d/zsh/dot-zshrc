@@ -6,9 +6,6 @@ setopt autocd notify
 unsetopt beep
 bindkey -e
 
-COMP_SCRIPTS="$(find $HOME -name "competitive-programming")/scripts"
-PATH="$PATH:$COMP_SCRIPTS"
-
 eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
 
 source /usr/share/nvm/init-nvm.sh
