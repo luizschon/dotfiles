@@ -14,7 +14,7 @@ print_success() {
 create_backup() {
     local source=$1
     echo -e "\e[1;33mINFO:\e[0m creating backup of ${source}."
-    cp "$source" "${source}~" 
+    mv "$source" "${source}~" 
 }
 
 link_files() {
@@ -28,7 +28,7 @@ link_files() {
     do
         local target="$target_dir/$n"
 
-        # Create backup of file/dir if it is not a symlink
+        # Create backup of file/dir if it's not a symlink
         if [[ -f "$target" || -d "$target" ]]; then
             [[ -L "$target" ]] || create_backup $target
         fi
@@ -38,13 +38,15 @@ link_files() {
         [[ $? != 0 ]] && print_error $n || print_success $n $target
 
         # Remove infinite link loop caused by symlinking dirs that are already linked
-        [ -d "$source_dir/$n" ] && unlink "$source_dir/$n/$n"
+        [[ -d "$source_dir/$n/$n" ]] && unlink "$source_dir/$n/$n"
     done
 }
 
 config_dir="$HOME/.config"
+gnupg_dir="$HOME/.gnupg"
 base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 link_files "$base_dir/home.d"   "$HOME"
 link_files "$base_dir/config.d" "$config_dir"
+link_files "$base_dir/gnupg.d"  "$gnupg_dir"
 
