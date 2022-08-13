@@ -25,7 +25,7 @@ exec --no-startup-id blueman-applet
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
 
-exec --no-startup-id $I3_SCRIPTS/theme.sh
+exec --no-startup-id set-theme
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # Use pactl to adjust volume in PulseAudio.
@@ -201,5 +201,5 @@ for_window [window_role="GtkFileChooserDialog" class="firefox"] resize set 55 pp
 
 # Resizes every kitty floating window to be consistent while
 # toggling between tiling and floating.
-exec_always --no-startup-id $I3_SCRIPTS/set_floating_size.py -m ppt -w 44 -h 51 Alacritty
-exec_always --no-startup-id $I3_SCRIPTS/set_floating_size.py -m ppt -w 55 -h 62 org.gnome.Nautilus
+exec_always --no-startup-id set-floating-size -m ppt -w 44 -h 51 Alacritty
+exec_always --no-startup-id set-floating-size -m ppt -w 55 -h 62 org.gnome.Nautilus
