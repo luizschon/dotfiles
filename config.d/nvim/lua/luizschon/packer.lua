@@ -7,18 +7,18 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
-require("packer").startup(function(use)
-  use "wbthomason/packer.nvim"
-  use {
+require("packer").startup(function(use) use "wbthomason/packer.nvim" use {
 	  "nvim-telescope/telescope.nvim", tag = "0.1.0",
 	  requires = { {"nvim-lua/plenary.nvim"} }
   }
   use({
 	  "rose-pine/neovim",
 	  as = "rose-pine",
-	  config = function()
-		  vim.cmd("colorscheme rose-pine")
-	  end
+      config = function ()
+          vim.cmd.colorscheme("rose-pine")
+          vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+          vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+      end
   })
   use("nvim-treesitter/nvim-treesitter", {run = ":TSUpdate"})
   use("theprimeagen/harpoon")
@@ -48,7 +48,6 @@ require("packer").startup(function(use)
   }
   use("shortcuts/no-neck-pain.nvim")
   use("lervag/vimtex")
-  use { 'AlphaTechnolog/pywal.nvim', as = 'pywal' }
 
   if is_bootstrap then
     require('packer').sync()
