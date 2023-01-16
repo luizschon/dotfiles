@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if eww ping; then
+    eww reload
+else
+    eww open bar
+fi

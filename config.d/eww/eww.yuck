@@ -1,0 +1,39 @@
+(defwindow bar
+  :class "bar"
+  :monitor 0
+  :geometry (geometry :x "0%"
+    :y "8px"
+    :width "80%"
+    :height "30px"
+  :anchor "top center")
+  :stacking "fg"
+  :reserve (struts :distance "40px" :side "top")
+  :windowtype "dock"
+  :exclusive true
+  :wm-ignore false
+  :hexpand false
+  (bar_container)
+)
+
+(defwidget bar_container []
+  (box :orientation "h"
+    (bar_center)))
+
+(defwidget bar_left []
+  (box
+    :halign "start"
+    :class "container"
+    ))
+
+(defwidget bar_center []
+  (box
+    :halign "center"
+    :class "container"
+    ))
+
+(defwidget bar_right []
+  (box
+    :halign "end"
+    :class "container"
+    ))
+
