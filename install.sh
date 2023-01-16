@@ -42,8 +42,21 @@ link_files() {
     done
 }
 
-config_dir="$HOME/.config"
-gnupg_dir="$HOME/.gnupg"
+curr_user=$(whoami)
+
+# Fix dir declarations to work when logged as root.
+# Useful while trying to use the script during the 
+# linux installation process
+if [[ curr_user == "root" ]]; then
+    echo "Running script as ROOT"
+    user=$(tail -1 /etc/passwd | awk -F: '{ print $1}')
+    config_dir="/home/$user/.config"
+    gnupg_dir="/home/$user/.gnupg"
+else
+    config_dir="$HOME/.config"
+    gnupg_dir="$HOME/.gnupg"
+fi
+
 base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 link_files "$base_dir/home.d"   "$HOME"

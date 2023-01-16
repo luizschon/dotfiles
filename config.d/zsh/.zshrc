@@ -6,9 +6,14 @@ setopt autocd notify
 unsetopt beep
 bindkey -e
 
-eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
+PATH=$PATH:$HOME/.local/bin
 
-source /usr/share/nvm/init-nvm.sh
+# Import colorscheme from 'wal' asynchronously
+(cat ~/.cache/wal/sequences &)
+
+[[ $USE_TMUX ]] && [[ -z $TMUX ]] && exec tmux
+
+eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
 
 #########################################
 # PLUGINS
@@ -23,9 +28,6 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 #########################################
 # THEME CUSTOMIZATION
-
-# Import colorscheme from 'wal' asynchronously
-(cat ~/.cache/wal/sequences &)
 
 # Generate LS_COLORS
 eval $(dircolors -b "$ZDOTDIR/dircolors.default")
