@@ -67,7 +67,6 @@ alias ll='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
 alias l.='ls -d .*'
-alias spm='sudo pacman'
-alias spm_clean='pacman -Qtdq | sudo pacman -Rns -'
+alias pm-clean='pacman -Qtdq | sudo pacman -Rns -'
 
 export GPG_TTY=$(tty)

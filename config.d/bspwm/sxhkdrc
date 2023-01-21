@@ -45,7 +45,7 @@ super + g
 
 # set the window state
 super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen} {;$HOME/.config/bspwm/scripts/check-fullscreen,,,}
 
 # set the node flags
 super + ctrl + {m,x,y,z}
@@ -82,7 +82,10 @@ super + {o,i}
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+	bspc {desktop -f,node -d} '^{1-9,10}' {; $HOME/.config/bspwm/scripts/check-fullscreen, }
+
+super + shift + o
+    $HOME/.config/bspwm/scripts/check-fullscreen
 
 #
 # preselect

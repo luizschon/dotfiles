@@ -1,0 +1,2 @@
+(deflisten workspaces
+    "scripts/workspaces")

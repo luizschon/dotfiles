@@ -1,0 +1,31 @@
+(defwindow top-bar
+    :class "top-bar"
+    :monitor 0
+    :geometry (geometry
+        :y "0px"
+        :width "82%"
+        :height "45px"
+        :anchor "top center")
+    :stacking "bg"
+    :reserve (struts :distance "45px" :side "top")
+    :windowtype "dock"
+    :wm-ignore false
+    (bar_container))
+
+(defwidget bar_container []
+    (box :orientation "h"
+    (left_container)))
+
+(defwidget left_container []
+    (literal
+        :content workspaces))
+
+(defwidget bar_center []
+    (box
+        :halign "center"
+        :class "container"))
+
+(defwidget bar_right []
+     (box
+        :halign "end"
+        :class "container"))
