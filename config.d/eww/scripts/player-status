@@ -1,0 +1,92 @@
+#! /usr/bin/env sh
+
+cache="$HOME/.cache"
+
+status_line () {
+    title=$(playerctl metadata --format '{{ title }}')
+    artist=$(playerctl metadata --format '{{ artist }}')
+    cover_file="$cache/eww_player_cover"
+
+    playerctl -p $1 status || $1=""
+
+    case $1 in
+        spotify)
+            curl $(playerctl metadata mpris:artUrl) -o $cover_file
+            yuck="(eventbox
+                    :vexpand true
+                    :onhover 'eww update show_player_control=true'
+                    :onhoverlost 'eww update show_player_control=false'
+                    :class 'music-player container'
+                    (box
+                        :space-evenly false
+                        (box :class 'music-art'
+                            :style 'background-image: url(\"$cover_file\")')
+                        (box
+                            :space-evenly false
+                            :class 'text'
+                            (box '$title')
+                            (separator :padding '13px')
+                            (box '$artist'))
+                        (revealer
+                            :transition 'slideright'
+                            :reveal show_player_control
+                            (box
+                                :spacing 8
+                                :class 'player-controls'
+                                (eventbox
+                                    :class 'fw-bw'
+                                    :cursor 'pointer'
+                                    :onclick 'playerctl -p $player previous'
+                                    '')
+                                (eventbox
+                                    :class 'play-pause'
+                                    :cursor 'pointer'
+                                    :onclick 'playerctl -p $player play-pause'
+                                    '')
+                                (eventbox
+                                    :class 'fw-bw'
+                                    :cursor 'pointer'
+                                    :onclick 'playerctl -p $player next'
+                                    '')))))"
+            echo -e $yuck
+
+        ;;
+        firefox) 
+
+        ;;
+        *) 
+            echo "(box :class 'container music-player text' 'nada')"
+        ;;
+    esac
+}
+
+notification () {
+    title=$(playerctl metadata --format '{{ title }}')
+    artist=$(playerctl metadata --format '{{ artist }}')
+
+    case $1 in
+        spotify) 
+        ;;
+        firefox) 
+        ;;
+        *) 
+        ;;
+    esac
+}
+
+command=$1
+
+case $command in
+    bar) task=status_line
+    ;;
+    notification) task=notification
+    ;;
+    *) echo default
+    ;;
+esac
+
+playerctl -p "spotify,firefox" --follow metadata --format '{{ playerName }}' | \
+while read -r; do 
+    player=$(playerctl metadata --format '{{ playerName }}')
+    ${task} $player
+done

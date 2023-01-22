@@ -1,42 +1,112 @@
+$shadow: 1px 4px 4px 1px hsla(0,0%,0%,.3);
+$bg: #f2ecda;
+$fg: #41403E;
+
 .top-bar {
-    background-color: $background;
-    border-radius: 0 0 10px 10px;
-    font-family: "Iosevka", "Font Awesome 6 Brands Solid", "Font Awesome 6 Free Solid";
+    background-color: $bg;
+    border-radius: 285px 13px 275px 13px/13px 275px 13px 285px;
+    border: solid 3px $fg;
 }
 
 .workspaces {
-    border-radius: 0 0 20px 0;
+    font-weight: bold;
+    margin: 7px 13px;
     padding: 0 1.5em 0 1.5em;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+    border: solid 2px $fg;
+    border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
+    box-shadow: $shadow;
 
     button {
+        font-size: 0.85em;
         padding: 0 0.32em;
-        font-size: 0.8em;
-        transition: all 100ms ease-in-out;
+        transition: all 90ms ease-in-out;
 
         &:hover{
-            font-size: 1em;
+            &.occupied {
+                padding-bottom: 0.4em;
+            }
+            &.inactive {
+                    padding-bottom: 0.4em;
+            }
         }
 
         &.active {
-            color: $color1;
             font-family: "Font Awesome 6 Free Solid";
             font-size: 1.2em;
+            color: $color1;
         }
 
         &.occupied {
-            color: $color4;
             font-family: "Font Awesome 6 Free Solid";
+            color: $color4;
         }
 
         &.inactive {
-            color: $color3;
             font-family: "Font Awesome 6 Free Regular";
+            color: $color3;
         }
     }
 }
 
-.icon {
-    padding: 6px;
-    border-radius: 3px;
+.container {
+    padding: 0 0.5em;
+}
+
+.date {
+    font-family: "Comic Mono", monospace;
+    font-size: 1.1em;
+    color: $fg;
+    border-bottom: dotted 3px $fg;
+    padding: 0 0.2em;
+    padding-top: 3px;
+}
+
+.glyph {
+    color: $fg;
+    font-size: 1.2em;    
+    padding: 0 0.5em;
+}
+
+.separator {
+    font-family: "Font Awesome 6 Free Solid";
+    font-size: 0.3em; 
+}
+
+
+.music-player {
+    color: $fg;
+    font-family: "Comic Mono", monospace;
+    font-size: 1em;
+
+    .music-art {
+        background-size: cover;
+        background-position: center;
+        min-height: 30px;
+        min-width: 30px;
+        border-radius: 100%;
+    }
+
+    .text {
+        border-bottom: dotted 3px $fg;
+        padding: 0 0.2em;
+        padding-top: 5px
+    }
+
+    .player-controls {
+        padding-left: 20px;
+        font-size: 1.2em;
+        transition: color 100ms ease-in-out;
+
+        .play-pause {
+            color: $color6;
+            &:hover {
+                font-size: 1.21em;
+                color: $color2;
+            }
+        }
+
+        .fw-bw {
+            color: $color5;
+        }
+    }
 }

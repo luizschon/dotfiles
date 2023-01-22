@@ -1,31 +1,89 @@
+(defvar show_date false)
+(defvar show_player_control false)
+
+(defpoll time
+    :interval "1s"
+    `source $HOME/.config/eww/scripts/blink-hour`)
+
+(defpoll date
+    :interval "1m"
+    :initial "date +'%d/%m/%Y'"
+    `date +'%d/%m/%Y'`)
+
+(deflisten player_status
+    :initial ""
+    `scripts/player-status bar`)
+
 (defwindow top-bar
     :class "top-bar"
     :monitor 0
     :geometry (geometry
-        :y "0px"
+        :x "0%"
+        :y "7px"
         :width "82%"
-        :height "45px"
+        :height "47px"
         :anchor "top center")
-    :stacking "bg"
-    :reserve (struts :distance "45px" :side "top")
+    :stacking "fg"
+    :reserve (struts :distance "54px" :side "top")
     :windowtype "dock"
     :wm-ignore false
     (bar_container))
 
 (defwidget bar_container []
-    (box :orientation "h"
-    (left_container)))
+    (centerbox
+        :class "container"
+        (left_container)
+        (center_container)
+        (right_container)))
 
 (defwidget left_container []
     (literal
         :content workspaces))
 
-(defwidget bar_center []
+(defwidget center_container []
     (box
+        :orientation "h"
+        :space-evenly false
+        :valign "center"
         :halign "center"
-        :class "container"))
+        (literal :content player_status)))
 
-(defwidget bar_right []
-     (box
+(defwidget right_container []
+    (box
+        :class "container"
+        :space-evenly false
         :halign "end"
-        :class "container"))
+        :valign "center"
+        :vexpand true
+        (date)))
+
+(defwidget date []
+    (box
+        :space-evenly false
+        :valign "center"
+        :vexpand true
+        (eventbox
+            :cursor "pointer"
+            :class "container"
+            :onhover "eww update show_date=true"
+            :onhoverlost "eww update show_date=false"
+            (box
+                :space-evenly false
+                (revealer
+                    :transition "slideleft"
+                    :reveal show_date
+                    (box :space-evenly false
+                        (glyph :text "")
+                        (box :class "date" :space-evenly false date (separator :padding "7px"))))
+                (box :class "date" time)))
+        (glyph :text "")))
+
+(defwidget glyph [text]
+    (box :class "glyph" text))
+
+(defwidget separator [padding]
+    (box 
+        :class "separator"
+        :style "padding: 0 ${padding} 10px ${padding}"
+        ""))
+
