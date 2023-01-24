@@ -54,7 +54,6 @@
         :space-evenly false
         :valign "center"
         :halign "center"
-        :visible player_active
             (eventbox
                     :vexpand true
                     :onhover "eww update show_player_control=true"
@@ -72,10 +71,11 @@
                         (box
                             :space-evenly false
                             :class "text"
-                            (box player_title)
+                            (box {player_title == "" ? "Nothing is playing lil bro" : player_title})
                             (separator :padding "12px")
-                            (box player_artist))
+                            (box {player_artist == "" ? "Stop looking" : player_artist}))
                         (revealer
+                            :visible player_active
                             :transition "slideright"
                             :reveal show_player_control
                             :duration "0.4s"
