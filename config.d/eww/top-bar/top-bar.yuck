@@ -10,9 +10,14 @@
     :initial "date +'%d/%m/%Y'"
     `date +'%d/%m/%Y'`)
 
-(deflisten player_status
-    :initial ""
-    `scripts/player-status bar`)
+(defvar player_name "")
+(defvar player_active false)
+(defvar player_status "")
+(defvar player_title "")
+(defvar player_artist "")
+(defvar player_cover_art "")
+(defvar player_uri "")
+(defvar fallback_cover_art "assets/fallback_cover_art.jpg")
 
 (defwindow top-bar
     :class "top-bar"
@@ -41,12 +46,57 @@
         :content workspaces))
 
 (defwidget center_container []
+    (player))
+
+(defwidget player []
     (box
         :orientation "h"
         :space-evenly false
         :valign "center"
         :halign "center"
-        (literal :content player_status)))
+        :visible player_active
+            (eventbox
+                    :vexpand true
+                    :onhover "eww update show_player_control=true"
+                    :onhoverlost "eww update show_player_control=false"
+                    :class "music-player container"
+                    (box
+                        :spacing 8
+                        :space-evenly false
+                        (overlay
+                            (box :class "music-art" 
+                                :style "background-image: url('${fallback_cover_art}')")
+                            (box :class "music-art"
+                                :style "background-image: url('${player_cover_art}')")
+                        )
+                        (box
+                            :space-evenly false
+                            :class "text"
+                            (box player_title)
+                            (separator :padding "12px")
+                            (box player_artist))
+                        (revealer
+                            :transition "slideright"
+                            :reveal show_player_control
+                            :duration "0.4s"
+                            (box
+                                :spacing 8
+                                :class "player-controls"
+                                (eventbox
+                                    :class "fw-bw"
+                                    :cursor "pointer"
+                                    :onclick "playerctl -p ${player_name} previous"
+                                    "")
+                                (eventbox
+                                    :class "play-pause"
+                                    :cursor "pointer"
+                                    :onclick "playerctl -p ${player_name} play-pause"
+                                    player_status)
+                                (eventbox
+                                    :class "fw-bw"
+                                    :cursor "pointer"
+                                    :onclick "playerctl -p ${player_name} next"
+                                    "")))))))
 
 (defwidget right_container []
     (box
@@ -72,6 +122,7 @@
                 (revealer
                     :transition "slideleft"
                     :reveal show_date
+                    :duration "0.4s"
                     (box :space-evenly false
                         (glyph :text "")
                         (box :class "date" :space-evenly false date (separator :padding "7px"))))
@@ -84,6 +135,6 @@
 (defwidget separator [padding]
     (box 
         :class "separator"
-        :style "padding: 0 ${padding} 10px ${padding}"
+        :style "padding: 0 ${padding} 5px ${padding}"
         ""))
 

@@ -1,4 +1,0 @@
-#! /usr/bin/env sh
-
-player=$(cat "$HOME/.cache/eww_player_state")
-echo $(playerctl -p $player status)

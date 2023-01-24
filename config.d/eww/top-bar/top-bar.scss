@@ -1,4 +1,5 @@
 $shadow: 1px 4px 4px 1px hsla(0,0%,0%,.3);
+$shadow-light: 0px 4px 4px 0px hsla(0,0%,0%,.1);
 $bg: #f2ecda;
 $fg: #41403E;
 
@@ -84,6 +85,7 @@ $fg: #41403E;
         min-height: 30px;
         min-width: 30px;
         border-radius: 100%;
+        box-shadow: $shadow-light;
     }
 
     .text {
@@ -93,7 +95,6 @@ $fg: #41403E;
     }
 
     .player-controls {
-        padding-left: 20px;
         font-size: 1.2em;
         transition: color 100ms ease-in-out;
 

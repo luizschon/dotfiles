@@ -22,6 +22,6 @@ pgrep -x picom > /dev/null || picom &
 pgrep -x blueman-applet > /dev/null || blueman-applet &
 # pgrep -x nm-applet > /dev/null || nm-applet &
 pgrep -x lxqt-policykit-agent > /dev/null || lxqt-policykit-agent &
-~/.config/eww/scripts/launch-bar > /dev/null &
 
+exec $HOME/.config/eww/scripts/launch-bar > /dev/null &
 exec $HOME/.config/bspwm/scripts/set-wallpaper &

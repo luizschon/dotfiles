@@ -1,92 +1,62 @@
 #! /usr/bin/env sh
+#
+# Script that controls some eww variables related to the music/video status in 
+# the top bar and the notification panel. This script tries it best to overcome 
+# the weird behaviours of the players and the limitations of the playerctl utili-
+# ty and even after these attempts, its still a quite a bit hacky.
 
+fetch_album_art() {
+    local cover_art_uri=$(playerctl -p $player metadata mpris:artUrl)
+
+    case $player in
+        spotify)
+            cover_art_path="$cache/eww_player_art"
+            curl $cover_art_uri -o $cover_art_path
+        ;;
+        firefox)
+            # Remove file:// prefix from uri
+            cover_art_path=${cover_art_uri#"file://"}
+        ;;
+        *)  
+            cover_art_path=""
+        ;;
+    esac
+}
+
+priority_list="spotify,firefox" 
 cache="$HOME/.cache"
 
-status_line () {
-    title=$(playerctl metadata --format '{{ title }}')
-    artist=$(playerctl metadata --format '{{ artist }}')
-    cover_file="$cache/eww_player_cover"
+playerctl -p $priority_list -F metadata -f '{{playerName}} {{title}} {{status}}' | \
+while read -r line; do 
+    if [[ -z $line ]]; then
+        eww update player_active=false
+        continue
+    fi
 
-    playerctl -p $1 status || $1=""
+    player=$(echo $line | awk '{ print $1 }')
+    status=$(playerctl -p $player status)
+    title=$(playerctl -p $player metadata title)
+    artist=$(playerctl -p $player metadata artist)
+    [[ $player = "spotify" ]] && uri=$(playerctl -p $player metadata xesam:url) 
 
-    case $1 in
-        spotify)
-            curl $(playerctl metadata mpris:artUrl) -o $cover_file
-            yuck="(eventbox
-                    :vexpand true
-                    :onhover 'eww update show_player_control=true'
-                    :onhoverlost 'eww update show_player_control=false'
-                    :class 'music-player container'
-                    (box
-                        :space-evenly false
-                        (box :class 'music-art'
-                            :style 'background-image: url(\"$cover_file\")')
-                        (box
-                            :space-evenly false
-                            :class 'text'
-                            (box '$title')
-                            (separator :padding '13px')
-                            (box '$artist'))
-                        (revealer
-                            :transition 'slideright'
-                            :reveal show_player_control
-                            (box
-                                :spacing 8
-                                :class 'player-controls'
-                                (eventbox
-                                    :class 'fw-bw'
-                                    :cursor 'pointer'
-                                    :onclick 'playerctl -p $player previous'
-                                    '')
-                                (eventbox
-                                    :class 'play-pause'
-                                    :cursor 'pointer'
-                                    :onclick 'playerctl -p $player play-pause'
-                                    '')
-                                (eventbox
-                                    :class 'fw-bw'
-                                    :cursor 'pointer'
-                                    :onclick 'playerctl -p $player next'
-                                    '')))))"
-            echo -e $yuck
+    [[ $status = "Playing" ]] && status="" || status=""
 
-        ;;
-        firefox) 
+    # When spotify starts up, the title and artist starts empty,
+    # even though the album art url is set. So we will default it
+    # to "Unknown" and use the fallback album art to avoid confusion 
+    [[ -z $title ]] && title="Unknown" && artist="Unknown"
 
-        ;;
-        *) 
-            echo "(box :class 'container music-player text' 'nada')"
-        ;;
-    esac
-}
+    # Update variables asynchronously
+    eww update player_active=true \
+               player_name="$player" \
+               player_status="$status" \
+               player_title="$title" \
+               player_artist="$artist" \
+               player_uri="$uri"
 
-notification () {
-    title=$(playerctl metadata --format '{{ title }}')
-    artist=$(playerctl metadata --format '{{ artist }}')
+    echo $(playerctl -p $player metadata)
 
-    case $1 in
-        spotify) 
-        ;;
-        firefox) 
-        ;;
-        *) 
-        ;;
-    esac
-}
-
-command=$1
-
-case $command in
-    bar) task=status_line
-    ;;
-    notification) task=notification
-    ;;
-    *) echo default
-    ;;
-esac
-
-playerctl -p "spotify,firefox" --follow metadata --format '{{ playerName }}' | \
-while read -r; do 
-    player=$(playerctl metadata --format '{{ playerName }}')
-    ${task} $player
+    # Fetch album/cover art and update variable
+    fetch_album_art
+    eww update player_cover_art="$cover_art_path"
 done

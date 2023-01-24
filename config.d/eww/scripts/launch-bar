@@ -1,7 +1,16 @@
 #!/usr/bin/env sh
 
+run_script() {
+    exec $HOME/.config/eww/scripts/player-status > /dev/null &
+}
+
 if eww ping; then
-    eww reload
+    PID=$(ps | grep 'playerctl' | awk '{ print $1 }')
+    echo $PID
+    [[ -z PID ]] || kill $PID > /dev/null
+    eww reload > /dev/null
 else
-    eww open bar
+    eww open top-bar > /dev/null 
 fi
+
+run_script
