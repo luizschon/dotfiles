@@ -54,8 +54,6 @@ while read -r line; do
                player_artist="$artist" \
                player_uri="$uri"
 
-    echo $(playerctl -p $player metadata)
-
     # Fetch album/cover art and update variable
     fetch_album_art
     eww update player_cover_art="$cover_art_path"
