@@ -26,7 +26,7 @@ fetch_album_art() {
 priority_list="spotify,firefox" 
 cache="$HOME/.cache"
 
-playerctl -p $priority_list -F metadata -f '{{playerName}} {{title}} {{status}}' | \
+playerctl -p $priority_list -F metadata -f '{{playerName}} {{title}} {{status}} {{mpris:artUrl}}' | \
 while read -r line; do 
     if [[ -z $line ]]; then
         eww update player_active=false
