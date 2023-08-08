@@ -59,7 +59,7 @@ fi
 
 base_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-link_files "$base_dir/home.d"   "$HOME"
-link_files "$base_dir/config.d" "$config_dir"
-link_files "$base_dir/gnupg.d"  "$gnupg_dir"
+link_files "$base_dir/home"   "$HOME"
+link_files "$base_dir/config" "$config_dir"
+link_files "$base_dir/gnupg"  "$gnupg_dir"
 
