@@ -8,12 +8,10 @@ bindkey -e
 
 PATH=$PATH:$HOME/.local/bin
 
-# Import colorscheme from 'wal' asynchronously
-(cat ~/.cache/wal/sequences &)
-
-[[ $USE_TMUX ]] && [[ -z $TMUX ]] && exec tmux
-
 eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
+
+cargo_env="$HOME/.cargo/env"
+[[ -f "$cargo_env" ]] && source "$cargo_env"
 
 #########################################
 # PLUGINS
