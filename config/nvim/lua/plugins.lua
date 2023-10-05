@@ -1,50 +1,41 @@
--- Bootstrap the packer.nvim plugin manager
-local ensure_packer = function()
-    local packerpath = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-    if vim.fn.empty(vim.fn.glob(packerpath)) > 0 then
-        vim.fn.system({
-            "git",
-            "clone",
-            "--depth", "1",
-            "https://github.com/wbthomason/packer.nvim",
-            packerpath
-        })
-        vim.cmd [[packadd packer.nvim]]
-        return true
-    end
-    return false
+-- Bootstrap the lazy.nvim plugin manager
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
+vim.opt.rtp:prepend(lazypath)
 
-local packer_bootstrap = ensure_packer()
-
-require("packer").startup(function(use)
-    use "wbthomason/packer.nvim"
+require("lazy").setup({
+    "wbthomason/packer.nvim",
     -- Colorscheme
-    use { "catppuccin/nvim", as = "catppuccin" }
+    { "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000 },
     -- LSP and autocompletion support
-    use "hrsh7th/nvim-cmp"
-    use "neovim/nvim-lspconfig"
-    use "hrsh7th/cmp-nvim-lsp"
-    use "hrsh7th/cmp-buffer"
-    -- use "hrsh7th/cmp-path"
-    -- use "hrsh7th/cmp-cmdline"
-    use "saadparwaiz1/cmp_luasnip"
-    use "L3MON4D3/LuaSnip"
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "saadparwaiz1/cmp_luasnip",
+    -- "hrsh7th/cmp-path",
+    -- "hrsh7th/cmp-cmdline",
+    "neovim/nvim-lspconfig",
+    "L3MON4D3/LuaSnip",
+    -- Editor functionality
+    "lervag/vimtex",
+})
 
-    -- Automatically set up your configuration after cloning packer.nvim
-    -- Put this at the end after all plugins
-    if packer_bootstrap then
-        require("packer").sync()
-    end
-end)
-
--- LSP and Autocompletion setup/config ---------------------------------------
+-- LSP and Autocompletion setup/config -----------------------------------------
 
 local capabilites = require("cmp_nvim_lsp").default_capabilities()
 local lspconfig   = require("lspconfig")
 
 -- Enable lsp servers with cmp capabilites
-local servers = { "clangd", "rust_analyzer", "pyright", "tsserver" }
+local servers = { "clangd", "rust_analyzer", "pyright", "tsserver", "texlab" }
 for _, server in ipairs(servers) do
     lspconfig[server].setup({
         capabilities = capabilities,
@@ -103,4 +94,9 @@ cmp.setup.cmdline({ '/', '?' }, {
         { name = "buffer" },
     })
 })
+
+-- Vimtex setup and configuration ----------------------------------------------
+
+vim.g.vimtex_view_method = "mupdf"
+vim.g.vimtex_compiler_method = "latexmk"
 
