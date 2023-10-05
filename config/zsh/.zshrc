@@ -8,7 +8,7 @@ bindkey -e
 
 PATH=$PATH:$HOME/.local/bin
 
-eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
+command -v keychain > /dev/null && eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
 
 cargo_env="$HOME/.cargo/env"
 [[ -f "$cargo_env" ]] && source "$cargo_env"
