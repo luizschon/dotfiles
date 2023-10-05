@@ -13,7 +13,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    "wbthomason/packer.nvim",
     -- Colorscheme
     { "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000 },
     -- LSP and autocompletion support
