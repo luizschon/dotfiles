@@ -1,7 +1,0 @@
-#! /usr/bin/env sh
-
-xwininfo -all -id $(bspc query -N -n) | grep Fullscreen
-
-if [ $? = 0 ] ; then eww close top-bar ; exit 0 ; fi
-
-eww open top-bar

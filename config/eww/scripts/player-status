@@ -23,7 +23,7 @@ fetch_album_art() {
     esac
 }
 
-priority_list="spotify,firefox" 
+priority_list="spotify,firefox,chromium" 
 cache="$HOME/.cache"
 
 playerctl -p $priority_list -F metadata -f '{{playerName}} {{title}} {{status}} {{mpris:artUrl}}' | \
@@ -39,7 +39,7 @@ while read -r line; do
     artist=$(playerctl -p $player metadata artist)
     [[ $player = "spotify" ]] && uri=$(playerctl -p $player metadata xesam:url) 
 
-    [[ $status = "Playing" ]] && status="" || status=""
+    [[ $status = "Playing" ]] && status="Playing" || status="Paused"
 
     # When spotify starts up, the title and artist starts empty,
     # even though the album art url is set. So we will default it

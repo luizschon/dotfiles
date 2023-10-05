@@ -1,5 +1,6 @@
 (defvar show_date false)
 (defvar show_player_control false)
+(defvar use_dark_theme true)
 
 (defpoll time
     :interval "1s"
@@ -19,118 +20,159 @@
 (defvar player_uri "")
 (defvar fallback_cover_art "assets/fallback_cover_art.jpg")
 
-(defwindow top-bar
-    :class "top-bar"
-    :monitor 0
+(defwindow left-bar
+    :geometry (geometry
+        :x "2%"
+        :height "37px"
+        :anchor "top left")
+    :stacking "fg"
+    :reserve (struts :distance "40px" :side "top")
+    :windowtype "desktop"
+    :wm-ignore false
+    (left_container))
+
+(defwindow center-bar
     :geometry (geometry
         :x "0%"
-        :y "7px"
-        :width "82%"
-        :height "47px"
+        :height "37px"
         :anchor "top center")
     :stacking "fg"
-    :reserve (struts :distance "54px" :side "top")
-    :windowtype "dock"
+    :reserve (struts :distance "40px" :side "top")
+    :windowtype "desktop"
     :wm-ignore false
-    (bar_container))
+    (center_container))
 
-(defwidget bar_container []
-    (centerbox
-        :class "container"
-        (left_container)
-        (center_container)
-        (right_container)))
+(defwindow right-bar
+    :geometry (geometry
+        :x "-2%"
+        :height "37px"
+        :anchor "top right")
+    :stacking "fg"
+    :reserve (struts :distance "40px" :side "top")
+    :windowtype "desktop"
+    :wm-ignore false
+    (right_container))
+
+(defwidget themed [class ?space-evenly ?valign ?halign ?orientation]
+    (box
+        :class "${class} ${class}-${use_dark_theme ? "dark-theme" : "light-theme"}"
+        :space-evenly space-evenly
+        :valign valign
+        :halign halign
+        :orientation orientation
+        (children)))
+        
 
 (defwidget left_container []
-    (literal
-        :content workspaces))
+    (themed
+        :class "container"
+        :valign "fill"
+        :halign "start"
+        (literal
+            :content workspaces)))
 
 (defwidget center_container []
-    (player))
-
-(defwidget player []
-    (box
-        :orientation "h"
-        :space-evenly false
-        :valign "center"
-        :halign "center"
-            (eventbox
-                    :vexpand true
-                    :onhover "eww update show_player_control=true"
-                    :onhoverlost "eww update show_player_control=false"
-                    :class "music-player container"
-                    (box
-                        :spacing 8
-                        :space-evenly false
-                        (overlay
-                            (box :class "music-art" 
-                                :style "background-image: url('${fallback_cover_art}')")
-                            (box :class "music-art"
-                                :style "background-image: url('${player_cover_art}')")
-                        )
-                        (box
-                            :space-evenly false
-                            :class "text"
-                            (box {player_title == "" ? "Nothing is playing lil bro" : player_title})
-                            (separator :padding "12px")
-                            (box {player_artist == "" ? "Stop looking" : player_artist}))
-                        (revealer
-                            :visible player_active
-                            :transition "slideright"
-                            :reveal show_player_control
-                            :duration "0.4s"
-                            (box
-                                :spacing 8
-                                :class "player-controls"
-                                (eventbox
-                                    :class "fw-bw"
-                                    :cursor "pointer"
-                                    :onclick "playerctl -p ${player_name} previous"
-                                    "")
-                                (eventbox
-                                    :class "play-pause"
-                                    :cursor "pointer"
-                                    :onclick "playerctl -p ${player_name} play-pause"
-                                    player_status)
-                                (eventbox
-                                    :class "fw-bw"
-                                    :cursor "pointer"
-                                    :onclick "playerctl -p ${player_name} next"
-                                    "")))))))
-
-(defwidget right_container []
-    (box
+    (themed
         :class "container"
         :space-evenly false
+        :valign "fill"
+        :halign "center"
+        (player)))
+    
+
+(defwidget right_container []
+    (themed
+        :class "container"
+        :space-evenly false
+        :valign "fill"
         :halign "end"
-        :valign "center"
-        :vexpand true
-        (date)))
+        (date)
+        (battery
+            :battery {EWW_BATTERY.BAT0.capacity}
+            :status {EWW_BATTERY.BAT0.status}
+            :charging "" :discharging "")))
+
+(defwidget battery [battery status charging discharging]
+    (themed
+        :class "battery"
+        :space-evenly true
+        (glyph
+            :class { battery < 20 ? "low" : battery < 40 ? "med" : "high" }
+            :font "icomoon"
+            :text { status == 'Charging' ? charging : discharging })
+        (label :text "${battery}%")))
+
+(defwidget player []
+    (eventbox
+            :onhover "eww update show_player_control=true"
+            :onhoverlost "eww update show_player_control=false"
+            :class "music-player"
+            (box
+                :spacing 8
+                :space-evenly false
+                (overlay
+                    :valign "center"
+                    (box :class "music-art" 
+                        :style "background-image: url('${fallback_cover_art}')")
+                    (box :class "music-art"
+                        :style "background-image: url('${player_cover_art}')")
+                )
+                (box
+                    :space-evenly false
+                    :class "text"
+                    (box {player_title == "" ? "Nothing is playing lil bro" : player_title})
+                    (separator :padding "12px")
+                    (box {player_artist == "" ? "Stop looking" : player_artist}))
+                (revealer
+                    :visible player_active
+                    :transition "slideright"
+                    :reveal show_player_control
+                    :duration "0.4s"
+                    (box
+                        :spacing 8
+                        :class "player-controls"
+                        (eventbox
+                            :class "fw-bw"
+                            :cursor "pointer"
+                            :onclick "playerctl -p ${player_name} previous"
+                            "")
+                        (eventbox
+                            :class "play-pause"
+                            :cursor "pointer"
+                            :onclick "playerctl -p ${player_name} play-pause"
+                            { player_status == 'Playing' ? "" : "" })
+                        (eventbox
+                            :class "fw-bw"
+                            :cursor "pointer"
+                            :onclick "playerctl -p ${player_name} next"
+                            ""))))))
 
 (defwidget date []
     (box
         :space-evenly false
+        :spacing 10
         :valign "center"
-        :vexpand true
         (eventbox
             :cursor "pointer"
-            :class "container"
             :onhover "eww update show_date=true"
             :onhoverlost "eww update show_date=false"
             (box
                 :space-evenly false
                 (revealer
-                    :transition "slideleft"
+                    :transition "slideright"
                     :reveal show_date
                     :duration "0.4s"
                     (box :space-evenly false
-                        (glyph :text "")
+                        :spacing 10
+                        (glyph :text "")
                         (box :class "date" :space-evenly false date (separator :padding "7px"))))
                 (box :class "date" time)))
-        (glyph :text "")))
+        (glyph :text "")))
 
-(defwidget glyph [text]
-    (box :class "glyph" text))
+(defwidget glyph [text ?font ?class]
+    (box
+        :style { strlen(font) > 0 ? "font-family: ${font};" : "" }
+        :class "glyph ${class}" text))
 
 (defwidget separator [padding]
     (box 

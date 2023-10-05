@@ -1,25 +1,63 @@
-$shadow: 1px 4px 4px 1px hsla(0,0%,0%,.3);
-$shadow-light: 0px 4px 4px 0px hsla(0,0%,0%,.1);
+$shadow: 1px 4px 4px 1px #FF0000FF;
+$shadow-light: 0px 4px 4px 0px #00000001;
 $bg: #f2ecda;
 $fg: #41403E;
+$color1: #121212;
+$dark: map-get($palette, 'macchiato');
+$light: map-get($palette, 'latte');
 
-.top-bar {
+.container {  
+    font-family: "SF Pro Display";
+    border-radius: 0 0 5px 5px;
+    padding: 0 5px;
     background-color: $bg;
-    border-radius: 285px 13px 275px 13px/13px 275px 13px 285px;
-    border: solid 3px $fg;
+
+    &-dark-theme {
+        background-color: map-get($dark, 'base');
+        color: map-get($dark, 'text');
+    }
+
+    &-light-theme {
+        color: map-get($light, 'base');
+        color: map-get($light, 'text');
+    }
 }
+
+.battery {
+    padding: 0 5px;
+    font-family: "SF Mono";
+    font-size: 1.01em;
+
+    .glyph {
+        font-size: 1.2em;
+    }
+
+    &-dark-theme {
+        .low {
+            color: map-get($dark, 'red');
+        }
+        .med {
+            color: map-get($dark, 'yellow');
+        }
+    }
+
+    &-light-theme {
+        .low {
+            color: map-get($light, 'red');
+        }
+        .med {
+            color: map-get($light, 'yellow');
+        }
+    }
+}
+
 
 .workspaces {
     font-weight: bold;
-    margin: 7px 13px;
-    padding: 0 1.5em 0 1.5em;
-    border: solid 2px $fg;
-    border-radius: 15px 255px 15px 225px/225px 15px 255px 15px;
-    box-shadow: $shadow;
 
     button {
         font-size: 0.85em;
-        padding: 0 0.32em;
+        padding: 0 0.25em;
         transition: all 90ms ease-in-out;
 
         &:hover{
@@ -34,37 +72,29 @@ $fg: #41403E;
         &.active {
             font-family: "Font Awesome 6 Free Solid";
             font-size: 1.2em;
-            color: $color1;
         }
 
         &.occupied {
             font-family: "Font Awesome 6 Free Solid";
-            color: $color4;
         }
 
         &.inactive {
             font-family: "Font Awesome 6 Free Regular";
-            color: $color3;
         }
     }
 }
 
-.container {
-    padding: 0 0.5em;
-}
-
 .date {
-    font-family: "Itim", cursive;
-    font-size: 1.2em;
-    color: $fg;
+    font-family: "SF Mono";
+    font-weight: normal;
+    font-size: 1.1em;
     border-bottom: dotted 3px $fg;
-    padding: 0 0.2em;
+    padding: 0 0.1em;
 }
 
 .glyph {
-    color: $fg;
-    font-size: 1.2em;    
-    padding: 0 0.5em;
+    font-family: "icomoon";
+    font-size: 1.1em;    
 }
 
 .separator {
@@ -74,9 +104,8 @@ $fg: #41403E;
 
 
 .music-player {
-    color: $fg;
-    font-family: "Itim", cursive;
-    font-size: 1.12em;
+    font-family: "SF Pro Display";
+    font-size: 1em;
 
     .music-art {
         background-size: cover;
@@ -88,24 +117,22 @@ $fg: #41403E;
     }
 
     .text {
-        border-bottom: dotted 3px $fg;
         padding: 0 0.2em;
     }
 
     .player-controls {
         transition: color 100ms ease-in-out;
+        font-family: "Font Awesome 6 Free";
 
         .play-pause {
             font-size: 1.1em;
-            color: $color6;
             &:hover {
-                color: $color2;
+                color: $color1;
             }
         }
 
         .fw-bw {
-            font-size: 0.9em;
-            color: $color5;
+            font-size: 1em;
         }
     }
 }

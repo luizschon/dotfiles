@@ -10,7 +10,7 @@ if eww ping; then
     [[ -z PID ]] || kill $PID > /dev/null
     eww reload > /dev/null
 else
-    eww open top-bar > /dev/null 
+    eww open-many left-bar center-bar right-bar > /dev/null 
 fi
 
 run_script
