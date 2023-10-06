@@ -11,7 +11,18 @@ PATH=$PATH:$HOME/.local/bin
 command -v keychain > /dev/null && eval $(keychain --eval --quiet ~/.ssh/github_ed25519)
 
 cargo_env="$HOME/.cargo/env"
-[[ -f "$cargo_env" ]] && source "$cargo_env"
+[ -f "$cargo_env" ] && source "$cargo_env"
+
+nvm_aur_path="/usr/share/nvm"
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+
+# Configure NVM differently depending on how it was installled
+if [ -f "$nvm_aur_path/init-nvm.sh" ]; then
+    source "$nvm_aur_path/init-nvm.sh"
+else
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" 
+    [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion" 
+fi
 
 #########################################
 # PLUGINS
