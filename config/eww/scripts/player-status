@@ -150,20 +150,10 @@ if __name__ == "__main__":
 
             # Iterates over list of PlayerStates, which are already ordered from
             # highest to lowest priority and selects the first one that is active
-            # and playing
             for state in list(player_states.values()):
-                if state.is_playing():
+                if state.is_active():
                     state_to_use = state
                     break;
-
-            # If no player was active and playing, selects the highest priority
-            # one that is active and paused
-            if state_to_use == fallback_state:
-                for state in list(player_states.values()):
-                    if state.is_paused():
-                        state_to_use = state
-                        break;
-
             update_eww(state_to_use)
 
     # TODO: handle SIGTERM signal to kill threads and reset the player
