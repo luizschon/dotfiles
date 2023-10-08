@@ -6,7 +6,6 @@ cd $WALLPAPERS_DIR
 if [ -z "$(ls -A $WALLPAPERS_DIR)" ]; then echo "Wallpaper directory is empty"; exit 1; fi
 
 rand_img=$(ls $WALLPAPERS_DIR | sort -R | tail -1)
-wal --saturate 0.65 -n -i $rand_img
 feh --bg-scale $rand_img
  
 exit
