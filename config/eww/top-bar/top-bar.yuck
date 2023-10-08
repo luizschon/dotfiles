@@ -11,14 +11,8 @@
     :initial "date +'%d/%m/%Y'"
     `date +'%d/%m/%Y'`)
 
-(defvar player_name "")
-(defvar player_active false)
-(defvar player_status "")
-(defvar player_title "")
-(defvar player_artist "")
-(defvar player_cover_art "")
-(defvar player_uri "")
-(defvar fallback_cover_art "assets/fallback_cover_art.jpg")
+(defvar fallback_thumbnail "assets/fallback_cover_art.jpg")
+(defvar player_state '{ "active": false }')
 
 (defwindow left-bar
     :geometry (geometry
@@ -113,18 +107,18 @@
                 (overlay
                     :valign "center"
                     (box :class "music-art" 
-                        :style "background-image: url('${fallback_cover_art}')")
+                        :style "background-image: url('${fallback_thumbnail}')")
                     (box :class "music-art"
-                        :style "background-image: url('${player_cover_art}')")
+                        :style "background-image: url('${player_state.thumbnail}')")
                 )
                 (box
                     :space-evenly false
                     :class "text"
-                    (box {player_title == "" ? "Nothing is playing lil bro" : player_title})
+                    (box { player_state.active ? player_state.title : "Nothing is playing lil bro" })
                     (separator :padding "12px")
-                    (box {player_artist == "" ? "Stop looking" : player_artist}))
+                    (box { player_state.active ? player_state.artist : "Stop looking" }))
                 (revealer
-                    :visible player_active
+                    :visible {player_state.active}
                     :transition "slideright"
                     :reveal show_player_control
                     :duration "0.4s"
@@ -134,17 +128,17 @@
                         (eventbox
                             :class "fw-bw"
                             :cursor "pointer"
-                            :onclick "playerctl -p ${player_name} previous"
+                            :onclick "playerctl -p ${player_state.player} previous"
                             "")
                         (eventbox
                             :class "play-pause"
                             :cursor "pointer"
-                            :onclick "playerctl -p ${player_name} play-pause"
-                            { player_status == 'Playing' ? "" : "" })
+                            :onclick "playerctl -p ${player_state.player} play-pause"
+                            { player_state.playing ? "" : "" })
                         (eventbox
                             :class "fw-bw"
                             :cursor "pointer"
-                            :onclick "playerctl -p ${player_name} next"
+                            :onclick "playerctl -p ${player_state.player} next"
                             ""))))))
 
 (defwidget date []
