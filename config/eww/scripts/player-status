@@ -4,7 +4,7 @@
 # the top bar and the notification panel. This script tries it best to overcome 
 # the weird behaviours of the players and the limitations of the playerctl utili- ty and even after these attempts, its still a quite a bit hacky.
 
-import os, threading, subprocess, signal, ctypes, json
+import os, threading, subprocess, signal, json
 from subprocess import Popen
 from enum import Enum
 
@@ -68,7 +68,7 @@ class PlayerThread(threading.Thread):
         print(f"Thread {self.name} started")
 
         # Creates command for especific player
-        format_str = "{{playerName}} {{status}} {{title}} {{artist}}"
+        format_str = "{{status}} {{title}} {{artist}}"
         cmd = ["playerctl", "-p", self.name, "-F", "metadata", "-f", format_str, ">", "/dev/null"]
 
         self.process = Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
