@@ -3,10 +3,8 @@
 # Script that controls some eww variables related to the music/video status in 
 # the top bar and the notification panel. This script tries it best to overcome 
 # the weird behaviours of the players and the limitations of the playerctl utili- ty and even after these attempts, its still a quite a bit hacky.
-import os
-import json
-import threading
-import subprocess
+
+import os, threading, subprocess, signal, ctypes, json
 from subprocess import Popen
 from enum import Enum
 
@@ -24,9 +22,6 @@ class PlayerState:
 
     def is_playing(self):
         return self.status == PlayerStatus.Playing
-
-    def is_paused(self):
-        return self.status == PlayerStatus.Paused
 
     def is_active(self):
         return self.status != PlayerStatus.Inactive
@@ -60,6 +55,34 @@ class PlayerState:
         }
 
 
+class PlayerThread(threading.Thread):
+    def __init__(self, player_name, *args):
+        threading.Thread.__init__(self, args=args)
+        self.name = player_name
+        self.args = args
+
+    # Thread task for each player. Reads continuously the output of playerctl
+    # with "-F metadata" args and controls the state of the PlayerState objects
+    def run(self):
+        ready = self.args[0]
+        print(f"Thread {self.name} started")
+
+        # Creates command for especific player
+        format_str = "{{playerName}} {{status}} {{title}} {{artist}}"
+        cmd = ["playerctl", "-p", self.name, "-F", "metadata", "-f", format_str, ">", "/dev/null"]
+
+        self.process = Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+        for _ in self.process.stdout:
+            update_player_state(self.name)
+            with ready:
+                ready.notify()
+
+        print(f"Thread {self.name} stopped")
+
+    def terminate(self):
+        self.process.terminate()
+
+
 # Global variables
 players = ["spotify", "chromium", "firefox"]
 player_states = { players[i]:PlayerState(players[i]) for i in range(len(players)) } 
@@ -68,7 +91,7 @@ player_states = { players[i]:PlayerState(players[i]) for i in range(len(players)
 def playerctl_send_command(player, command):
     return subprocess.run(
         ["playerctl", "-p", player] + command.split(" "),
-        stdout=subprocess.PIPE, text=True
+        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True
     ).stdout.strip()
 
 
@@ -100,24 +123,6 @@ def update_player_state(player):
         state.artist = None
 
 
-# Thread task for each player. Reads continuously the output of playerctl
-# with "-F metadata" args and controls the state of the PlayerState objects
-def track_player_state(player_name, ready):
-    print(f"Thread {player_name} started")
-
-    # Creates command for especific player
-    format_str = "{{playerName}} {{status}} {{title}} {{artist}}"
-    cmd = ["playerctl", "-p", player_name, "-F", "metadata", "-f", format_str, ">", "/dev/null"]
-
-    with Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True) as p:
-        for _ in p.stdout:
-            update_player_state(player_name)
-            with ready:
-                ready.notify()
-                
-        print(f"Thread {player_name} stopped")
-
-
 # Updates the player_state variable in Eww using a JSON format
 def update_eww(state):
     subprocess.run([
@@ -131,17 +136,30 @@ def update_eww(state):
 if __name__ == "__main__":
     ready = threading.Condition()
     player_threads = []
+    suspend = False
+
+    # Processes signals to kill threads before exiting the program
+    def exit_gracefully(signal, frame):
+        for thread in player_threads:
+            thread.terminate()
+            thread.join()
+        # Resets eww player status state before exiting
+        update_eww(fallback_state)
+        exit(0)
+
+    signal.signal(signal.SIGTERM, exit_gracefully)
+    signal.signal(signal.SIGINT, exit_gracefully)
 
     # Starts thread for each player
     for player in players:
-        t = threading.Thread(target=track_player_state, args=[player, ready])
-        t.start()
-        player_threads.append(t)
+        pt = PlayerThread(player, ready)
+        pt.start()
+        player_threads.append(pt)
 
     # Waits for the player threads to update its respectives PlayerState objects
     # and updates the variables used by eww
     fallback_state = PlayerState("none", status=PlayerStatus.Inactive)
-    while True:
+    while not suspend:
         with ready:
             ready.wait()
 
@@ -155,9 +173,4 @@ if __name__ == "__main__":
                     state_to_use = state
                     break;
             update_eww(state_to_use)
-
-    # TODO: handle SIGTERM signal to kill threads and reset the player
-    # state: update_eww(fallback_state)
-    for thread in player_threads:
-        thread.join()
 
