@@ -2,18 +2,20 @@ return {
     {
         "hrsh7th/nvim-cmp",
         version = false,
-        event = "InsertEnter",
         dependencies = {
             "neovim/nvim-lspconfig",
+            -- Cmp sources
+            "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-cmdline",
+            -- Luasnip requirements
             "saadparwaiz1/cmp_luasnip",
             "L3MON4D3/LuaSnip",
         },
         opts = function ()
-            local luasnip = require("luasnip")
             local cmp = require("cmp")
+            local luasnip = require("luasnip")
 
             return {
                 -- Uses luasnip as the snippet engine
@@ -57,8 +59,12 @@ return {
                 })
             }
         end,
-        config = function ()
+        init = function (_, opts)
             local cmp = require("cmp")
+
+            -- Setup plugin with opts defined above
+            cmp.setup(opts)
+
             -- Uses buffer for '/' and '?' search commands
             cmp.setup.cmdline({ '/', '?' }, {
                 mapping = cmp.mapping.preset.cmdline(),
@@ -66,6 +72,23 @@ return {
                     { name = "buffer" },
                 })
             })
+
+            -- Uses cmdline and path sources for ':' commands
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                })
+            })
         end,
+    },
+    {
+        "lervag/vimtex",
+        config = function ()
+            vim.g.vimtex_compiler_method = "latexmk"
+            vim.g.vimtex_view_method = "mupdf"
+        end
     },
 }
