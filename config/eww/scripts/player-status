@@ -31,16 +31,16 @@ class PlayerState:
         thumbnail_path = None
 
         # The mpris:artUrl field means different things depending on the player
-        match self.player:
-            case "firefox":
-                # Thumbnail URI is a file (file://foo/bar)
-                thumbnail_path = thumbnail_uri.removeprefix("file://")
-            case "spotify":
-                # Thumbnail URI is a HTTP URI (http://foo/bar)
-                thumbnail_path = "/tmp/" + thumbnail_uri.split("/")[-1]
-                # Downloads thumbnail from URI into tmp folder if not done before
-                if not os.path.exists(thumbnail_path):
-                    subprocess.run(["curl", thumbnail_uri, "-o", thumbnail_path, ">", "/dev/null"])
+        if thumbnail_uri.startswith("file://"):
+            # Thumbnail URI is a file (file://foo/bar)
+            thumbnail_path = thumbnail_uri.removeprefix("file://")
+        elif thumbnail_uri.startswith("https://"):
+            thumbnail_path = "/tmp/" + thumbnail_uri.split("/")[-1]
+            # Downloads thumbnail from URI into tmp folder if not done before
+            if not os.path.exists(thumbnail_path):
+                subprocess.run(["curl", thumbnail_uri, "-o", thumbnail_path, ">", "/dev/null"])
+        else:
+            print("Invalid or unsafe (HTTP) artUrl URI")
 
         return thumbnail_path
 
@@ -72,6 +72,10 @@ class PlayerThread(threading.Thread):
         cmd = ["playerctl", "-p", self.name, "-F", "metadata", "-f", format_str, ">", "/dev/null"]
 
         self.process = Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+
+        if self.process == None:
+            return
+
         for _ in self.process.stdout:
             update_player_state(self.name)
             with ready:
