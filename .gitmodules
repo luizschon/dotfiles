@@ -1,0 +1,3 @@
+[submodule "config/awesome/third_party/rubato"]
+	path = config/awesome/third_party/rubato
+	url = https://github.com/andOrlando/rubato.git
