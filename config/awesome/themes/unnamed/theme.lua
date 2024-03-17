@@ -9,7 +9,9 @@ local themes_path = gfs.get_configuration_dir() .. 'themes'
 local curr_theme_path = gfs.get_configuration_dir() .. 'themes/unnamed'
 local theme = {}
 
-theme.wallpaper = curr_theme_path .. '/wallpapers/wallpaper2.jpg'
+theme.wallpaper = gfs.get_random_file_from_dir(
+    curr_theme_path .. '/wallpapers/', { 'jpg', 'png' }, true
+)
 
 -- Default font and font configurarion.
 theme.default_font   = 'SF Pro Text'
