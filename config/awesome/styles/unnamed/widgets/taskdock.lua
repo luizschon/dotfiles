@@ -2,13 +2,18 @@ local awful      = require('awful')
 local gears      = require('gears')
 local wibox      = require('wibox')
 local beautiful  = require('beautiful')
+local rubato     = require('third_party.rubato')
 local dpi        = beautiful.xresources.apply_dpi
 
 local TaskDock = {
     mt = {}
 }
-
 local border_width = dpi(5)
+local icon_margin  = dpi(18)
+local icon_size    = dpi(70)
+local dock_spacing = dpi(12)
+local dock_margin  = dpi(35)
+local dock_height  = icon_size + 2 * icon_margin
 
 local tasklist_btns = gears.table.join( awful.button({}, 1, function (c) if c == client.focus then c.minimized = true else
             c:emit_signal("request::activate", "tasklist", { raise = true })
@@ -26,12 +31,12 @@ local tasklist_btns = gears.table.join( awful.button({}, 1, function (c) if c ==
 )
 
 function TaskDock:show(val)
-    self.visible = val or true
+    self.visible = val
 
-    if val == true then
-        
+    if self.visible == true then
+        self.slide_in.target = self.screen.geometry.height - (dock_height + dock_margin)
     else
-
+        self.slide_in.target = self.screen.geometry.height + dock_height
     end
 end
 
@@ -49,7 +54,7 @@ function TaskDock:new(args)
         filter = awful.widget.tasklist.filter.currenttags,
         buttons = args.buttons,
         layout = {
-            spacing = dpi(12),
+            spacing = dock_spacing,
             layout = wibox.layout.fixed.horizontal
         },
         widget_template = {
@@ -60,25 +65,22 @@ function TaskDock:new(args)
             border_color = beautiful.tasklist_fg_normal,
             border_strategy = 'none',
             {
-                margins = dpi(10),
-                widget = wibox.container.margin,
+                widget = wibox.container.place,
+                valign = 'center',
+                halign = 'center',
                 {
-                    id = 'clienticon',
-                    widget = awful.widget.clienticon,
-                    forced_width = dpi(80),
-                    forced_height = dpi(80),
-                },
+                    widget = wibox.container.margin,
+                    margins = icon_margin,
+                    {
+                        id = 'clienticon',
+                        widget = awful.widget.clienticon,
+                        forced_width = icon_size,
+                        forced_height = icon_size,
+                    },
+                }
             },
 
             create_callback = function (self, c, index, obj)
-                if c == client.focus then
-                    self.bg = beautiful.tasklist_bg_focus or beautiful.tasklist_bg_normal
-                    self.border_width = border_width
-                else
-                    self.bg = beautiful.tasklist_bg_normal
-                    self.border_width = 0
-                end
-
                 self:connect_signal('mouse::enter', function ()
                     self.bg = beautiful.tasklist_bg_focus or beautiful.tasklist_bg_normal
                 end)
@@ -107,23 +109,48 @@ function TaskDock:new(args)
         bg = '#00000000',
         layout = wibox.layout.fixed.horizontal,
         screen = args.screen,
-        ontop = false,
+        ontop = true,
         type = 'dock',
     }
 
     awful.placement.bottom(taskdock, {
         attach = true,
-        update_workarea = false,
-        margins = { bottom = dpi(35) },
         honor_workarea = true,
+        update_workspace = false,
+        margins = { bottom = dock_margin },
     })
 
     local obj = {}
-    self.__index = self
-    setmetatable(obj, self)
-    obj.visible = false
+
+    obj.screen = args.screen
     obj.taskdock = taskdock
     obj.visible = false
+
+    -- Slide-in animation using rubato, hardcoded for now.
+    obj.slide_in = rubato.timed {
+        awestore_compat = true,
+        duration =  0.25,
+        intro = 0.125,
+        rate = 144,
+        pos = args.screen.geometry.height,
+        easing = rubato.easing.quadratic,
+    }
+
+    obj.slide_in:subscribe(function (pos)
+        taskdock:geometry({ y = pos })
+        taskdock:draw()
+    end)
+
+    obj.slide_in.ended:subscribe(function ()
+        obj.taskdock.visible = obj.visible
+    end)
+
+    obj.slide_in.started:subscribe(function ()
+        obj.taskdock.visible = true
+    end)
+
+    self.__index = self
+    setmetatable(obj, self)
 
     obj:show(false)
 
