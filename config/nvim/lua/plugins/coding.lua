@@ -1,21 +1,21 @@
 return {
     {
-        "hrsh7th/nvim-cmp",
+        'hrsh7th/nvim-cmp',
         version = false,
         dependencies = {
-            "neovim/nvim-lspconfig",
+            'neovim/nvim-lspconfig',
             -- Cmp sources
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-cmdline',
             -- Luasnip requirements
-            "saadparwaiz1/cmp_luasnip",
-            "L3MON4D3/LuaSnip",
+            'saadparwaiz1/cmp_luasnip',
+            'L3MON4D3/LuaSnip',
         },
         opts = function ()
-            local cmp = require("cmp")
-            local luasnip = require("luasnip")
+            local cmp = require('cmp')
+            local luasnip = require('luasnip')
 
             return {
                 -- Uses luasnip as the snippet engine
@@ -25,20 +25,20 @@ return {
                     end
                 },
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "path" },
+                    { name = 'nvim_lsp' },
+                    { name = 'luasnip' },
+                    { name = 'path' },
                 }),
                 mapping = cmp.mapping.preset.insert({
-                    ["<C-space>"] = cmp.mapping.complete(),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<CR>"] = cmp.mapping.confirm({
+                    ['<C-space>'] = cmp.mapping.complete(),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({
                         behavior = cmp.ConfirmBehavior.Replace,
                         select = true,
                     }),
-                    ["<Tab>"] = cmp.mapping(function (fallback)
+                    ['<Tab>'] = cmp.mapping(function (fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
                         elseif luasnip.expand_or_jumpable() then
@@ -47,7 +47,7 @@ return {
                             fallback()
                         end
                     end, { 'i', 's' }),
-                    ["<S-Tab>"] = cmp.mapping(function (fallback)
+                    ['<S-Tab>'] = cmp.mapping(function (fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
                         elseif luasnip.jumpable(-1) then
@@ -60,7 +60,7 @@ return {
             }
         end,
         init = function (_, opts)
-            local cmp = require("cmp")
+            local cmp = require('cmp')
 
             -- Setup plugin with opts defined above
             cmp.setup(opts)
@@ -69,7 +69,7 @@ return {
             cmp.setup.cmdline({ '/', '?' }, {
                 mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
-                    { name = "buffer" },
+                    { name = 'buffer' },
                 })
             })
 
@@ -85,10 +85,16 @@ return {
         end,
     },
     {
-        "lervag/vimtex",
+        'lervag/vimtex',
         config = function ()
-            vim.g.vimtex_compiler_method = "latexmk"
-            vim.g.vimtex_view_method = "mupdf"
-        end
+            vim.g.vimtex_compiler_method = 'latexmk'
+            vim.g.vimtex_view_method = 'mupdf'
+        end,
+    },
+    {
+        'm4xshen/autoclose.nvim',
+        init = function ()
+            require('autoclose').setup()
+        end,
     },
 }
