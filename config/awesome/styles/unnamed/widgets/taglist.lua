@@ -26,7 +26,7 @@ local taglist_btns = gears.table.join(
 local taglist_template = {
     {
         {
-            id = "index_role",
+            id = 'index_role',
             widget = wibox.widget.textbox,
             font = font.monospace_with_size(13),
             align = 'center',

@@ -5,7 +5,7 @@ local beautiful = require('beautiful')
 local taglist   = require('styles.unnamed.widgets.taglist')
 local dpi       = beautiful.xresources.apply_dpi
 
-local bar_width = dpi(55)
+local bar_width = dpi(58)
 
 local create_left_bar = function (s)
     local _taglist = taglist.apply_taglist(s)
@@ -17,15 +17,14 @@ local create_left_bar = function (s)
         ontop = false,
         type = "dock",
         width = bar_width,
-        height = 0.75 * s.geometry.height,
-        shape = gears.shape.rounded_rect,
-        margins = { left = beautiful.useless_gap },
+        height = s.geometry.height,
     })
 
     s.left_bar:setup({
-        layout = wibox.layout.flex.vertical,
-        _taglist,
+        layout = wibox.layout.align.vertical,
+        expand = 'outside',
         awful.widget.keyboardlayout(),
+        _taglist,
         wibox.widget.textclock(),
     })
 
