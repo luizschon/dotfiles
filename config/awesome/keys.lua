@@ -133,6 +133,10 @@ M.global_keys = gears.table.join(
     }),
 
     -- Prompt
+    awful.key({ modkey }, 'd', function () awful.spawn('rofi -show drun') end, {
+        description = 'run application launcher', group = 'launcher'
+    }),
+
     awful.key({ modkey }, 'r', function ()
         awful.screen.focused().mypromptbox:run()
     end, {
