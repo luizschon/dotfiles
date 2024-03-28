@@ -7,10 +7,11 @@ local dpi          = xresources.apply_dpi
 
 local themes_path = gfs.get_configuration_dir() .. 'themes'
 local curr_theme_path = gfs.get_configuration_dir() .. 'themes/unnamed'
+local wallpaper_path = os.getenv('HOME') .. '/Pictures/wallpaper/'
 local theme = {}
 
 theme.wallpaper = gfs.get_random_file_from_dir(
-    curr_theme_path .. '/wallpapers/', { 'jpg', 'png' }, true
+    wallpaper_path , { 'jpg', 'png' }, true
 )
 
 -- Default font and font configurarion.
