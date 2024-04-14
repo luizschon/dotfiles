@@ -1,2 +1,9 @@
 Xcursor.theme: macOS-BigSur
 Xcursor.size: 24
+
+XTerm.termName: xterm-256-colors
+XTerm.vt100.locale: true
+XTerm.vt100.faceName: Iosevka Nerd Font Mono:size=14:antialias=true
+UXTerm.termName: xterm-256-colors
+UXTerm.vt100.locale: true
+UXTerm.vt100.faceName: Iosevka Nerd Font Mono:size=14:antialias=true

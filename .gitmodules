@@ -1,3 +1,6 @@
 [submodule "config/awesome/third_party/rubato"]
 	path = config/awesome/third_party/rubato
 	url = https://github.com/andOrlando/rubato.git
+[submodule "config/awesome/third_party/icon_customizer"]
+	path = config/awesome/third_party/icon_customizer
+	url = https://github.com/intrntbrn/icon_customizer.git
