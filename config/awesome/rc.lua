@@ -9,12 +9,12 @@ require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
-local beautiful = require("beautiful")
--- Notification library
+local beautiful = require("beautiful") -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local keys = require('keys')
+local icon_utils = require('utils.icons')
 -- Enable hotkeys help widget for VIM and other apps when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
@@ -215,6 +215,8 @@ awful.rules.rules = {
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
+          "Picture in picture",  -- Videos in picture-in-picture mode.
+          "ranger", -- Ranger filemanager
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
