@@ -25,7 +25,11 @@ local create_left_bar = function (s)
         expand = 'outside',
         awful.widget.keyboardlayout(),
         _taglist,
-        wibox.widget.textclock(),
+        {
+            layout = wibox.layout.flex.vertical,
+            wibox.widget.textclock(),
+            wibox.widget.systray(),
+        }
     })
 
 end
