@@ -143,6 +143,11 @@ M.global_keys = gears.table.join(
         description = 'run prompt', group = 'launcher'
     }),
 
+    -- Rofi filebrowser
+    awful.key({ modkey }, 'e', function () awful.spawn('rofi -show filebrowser') end, {
+        description = 'Open modal filebrowser', group = 'launcher'
+    }),
+
     awful.key({ modkey }, 'x', function ()
         awful.prompt.run {
             prompt       = 'Run Lua code: ',
@@ -156,7 +161,20 @@ M.global_keys = gears.table.join(
     -- Menubar
     awful.key({ modkey }, 'p', function() menubar.show() end, {
         description = 'show the menubar', group = 'launcher'
-    })
+    }),
+
+    -- Printscreen
+    awful.key({}, 'Print', function()
+        awful.spawn('/usr/bin/sh -c "if ! pgrep -x flameshot; then flameshot & disown; fi; flameshot gui"')
+    end, { description = 'Open screenshot selection', group = 'Screenshot' }),
+
+    awful.key({ 'Shift' }, 'Print', function()
+        awful.spawn('/usr/bin/sh -c "if ! pgrep -x flameshot; then flameshot & disown; fi; flameshot screen"')
+    end, { description = 'Screenshots entire screen', group = 'Screenshot' }),
+
+    awful.key({ 'Control', 'Shift' }, 'Print', function()
+        awful.spawn('/usr/bin/sh -c "if ! pgrep -x flameshot; then flameshot & disown; fi; flameshot full"')
+    end, { description = 'Screenshots entire desktop', group = 'Screenshot' })
 )
 
 M.client_keys = gears.table.join(
