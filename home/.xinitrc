@@ -1,2 +1,3 @@
+#! /usr/bin/env sh
 xrdb -merge ~/.Xresources
-awesome
+exec awesome
