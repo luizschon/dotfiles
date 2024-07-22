@@ -4,3 +4,4 @@ plugin/
 ~*
 *~
 *-lock.json
+.tmp*
