@@ -8,14 +8,29 @@
 [
   {
     "context": "Workspace",
+    "bindings": {}
+  },
+  {
+    "context": "Editor && vim_mode == normal",
     "bindings": {
-      // "shift shift": "file_finder::Toggle"
+      "space f f": "file_finder::Toggle",
+      "space f b": "tab_switcher::Toggle",
+      "space f s": "project_symbols::Toggle",
+      "space t t": "workspace::ToggleBottomDock"
     }
   },
   {
-    "context": "Editor",
+    "context": "TabSwitcher",
     "bindings": {
-      // "j k": ["workspace::SendKeystrokes", "escape"]
+      "j": ["workspace::SendKeystrokes", "down"],
+      "k": ["workspace::SendKeystrokes", "up"],
+      "space": ["workspace::SendKeystrokes", "enter"]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "escape escape": "workspace::ToggleBottomDock"
     }
   }
 ]

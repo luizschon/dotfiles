@@ -7,11 +7,40 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "theme": "Ayu Dark",
+  "tab_bar": {
+    "show": true
+  },
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "Ayu Dark"
+  },
   "telemetry": {
     "metrics": false
   },
   "vim_mode": true,
   "ui_font_size": 16,
-  "buffer_font_size": 16
+  "buffer_font_size": 16,
+  "use_autoclose": true,
+  "use_auto_surround": true,
+  "lsp": {
+    "discord_presence": {
+      "initialization_options": {
+        // Base url for all language icons
+        "base_icons_url": "https://raw.githubusercontent.com/xhyrom/zed-discord-presence/main/assets/icons/",
+        "state": "Working on {filename}",
+        "details": "In {workspace}",
+        // URL for large image
+        "large_image": "{base_icons_url}/{language}.png",
+        "large_text": "{language:u}", // :u makes first letter upper-case
+        // URL for small image
+        "small_image": "{base_icons_url}/zed.png",
+        "small_text": "Zed",
+        "git_integration": true
+      }
+    }
+  },
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font"
+  }
 }

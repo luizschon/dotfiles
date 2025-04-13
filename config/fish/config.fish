@@ -1,24 +1,18 @@
 if status --is-login
-
     # Set environment variables
-    set -g -x EDITOR nvim
-
-    # Start window manager after login, display managers are having problems
-    # starting a Xorg session.
-    if test -z "$DISPLAY" -a $XDG_VTNR = 1
-        exec startx -- -keeptty
-    end
-
+    set -g -x EDITOR zed
+    # set -gx GPG_TTY (tty)
 end
 
-if status is-interactive
+if status --is-interactive
     starship init fish | source
 
-    # Start ssh-agent (this is bad, as the agent runs forever unchecked)
-    if test -z (pgrep ssh-agent)
-        eval (ssh-agent -c)
-        set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-        set -Ux SSH_AGENT_PID $SSH_AGENT_PID
-        set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+    set -lx SHELL /usr/bin/fish
+
+    set git_ssh_key github_tinyblk
+    set gpg_key 5508FAC9F03AF83F
+
+    if command -q keychain
+        keychain --eval --agents ssh,gpg $git_ssh_key $gpg_key | source
     end
 end

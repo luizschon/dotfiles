@@ -8,9 +8,13 @@ config.font = wezterm.font_with_fallback({
     'Noto Color Emoji',
 })
 config.font_size = 12.0
-config.color_scheme = 'Ayu Dark (Gogh)'
+config.color_scheme = 'Argonaut (Gogh)'
 config.hide_tab_bar_if_only_one_tab = true
-config.initial_rows = 28
+config.initial_rows = 25
 config.initial_cols = 78
+config.default_cursor_style = 'BlinkingBlock'
+config.animation_fps = 144
+config.cursor_blink_rate = 380
+config.window_close_confirmation = 'NeverPrompt'
 
 return config
