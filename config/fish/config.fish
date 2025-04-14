@@ -13,6 +13,11 @@ if status --is-interactive
     set gpg_key 5508FAC9F03AF83F
 
     if command -q keychain
-        keychain --eval --agents ssh,gpg $git_ssh_key $gpg_key | source
+        keychain --quiet --eval --agents ssh,gpg $git_ssh_key $gpg_key | source
+    end
+
+    if test "$TERM_PROGRAM" = "WezTerm"; and command -q fastfetch
+        fastfetch --gpu-hide-type integrated
+        echo ""
     end
 end
