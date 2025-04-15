@@ -5,3 +5,4 @@ plugin/
 *~
 *-lock.json
 .tmp*
+fish_variables
