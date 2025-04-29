@@ -1,7 +1,5 @@
 if status --is-login
     # Set environment variables
-    set -g -x EDITOR zed
-    # set -gx GPG_TTY (tty)
 end
 
 if status --is-interactive
@@ -20,4 +18,13 @@ if status --is-interactive
         fastfetch --gpu-hide-type integrated
         echo ""
     end
+
+    direnv hook fish | source
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/luiz/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end

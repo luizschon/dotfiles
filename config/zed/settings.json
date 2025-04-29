@@ -7,6 +7,16 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "show_edit_predictions": false,
+  "edit_predictions": {
+    "mode": "subtle",
+    "copilot": {
+      "proxy": null,
+      "proxy_no_verify": null
+    },
+    "enabled_in_assistant": false
+  },
+  "icon_theme": "Colored Zed Icons Theme Dark",
   "tab_bar": {
     "show": true
   },
@@ -16,6 +26,7 @@
     "dark": "Ayu Dark"
   },
   "telemetry": {
+    "diagnostics": false,
     "metrics": false
   },
   "vim_mode": true,

@@ -4,11 +4,12 @@
     "source": "~/.config/fastfetch/cat.txt",
     "type": "file",
     "color": {
-      "1": "white",
+      "1": "default",
       "2": "yellow",
-      "3": "blue",
+      "3": "green",
     },
-    "padding": { "top": 1 },
+    "padding": { "top": 1, "right": 0 },
+    "position": "right",
   },
   "display": {
     "separator": "",

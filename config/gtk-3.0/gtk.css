@@ -1,7 +1,0 @@
-/* hide extra window decorations/double border */
-window decoration {
-    margin: 0;
-    border: none;
-    padding: 0;
-}
-@import 'colors.css';
