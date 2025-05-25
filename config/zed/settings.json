@@ -52,6 +52,7 @@
     }
   },
   "terminal": {
+    "dock": "right",
     "font_family": "JetBrainsMono Nerd Font"
   }
 }

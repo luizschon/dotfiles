@@ -14,24 +14,24 @@
     "context": "Editor && vim_mode == normal",
     "bindings": {
       "space f f": "file_finder::Toggle",
-      "space f b": "tab_switcher::Toggle",
+      "space f t": "tab_switcher::Toggle",
       "space f s": "project_symbols::Toggle",
       "space f p": "projects::OpenRecent",
-      "space t t": "workspace::ToggleBottomDock"
+      "space t": "terminal_panel::ToggleFocus"
     }
   },
   {
     "context": "TabSwitcher",
     "bindings": {
       "j": ["workspace::SendKeystrokes", "down"],
-      "k": ["workspace::SendKeystrokes", "up"],
-      "space": ["workspace::SendKeystrokes", "enter"]
+      "k": ["workspace::SendKeystrokes", "up"]
     }
   },
   {
     "context": "Terminal",
     "bindings": {
-      "escape escape": "workspace::ToggleBottomDock"
+      "escape": "terminal_panel::ToggleFocus",
+      "ctrl-e": "workspace::ToggleRightDock"
     }
   }
 ]
