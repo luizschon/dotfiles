@@ -35,4 +35,11 @@ if status --is-interactive
     alias diff="diff --color=always"
     alias grep="grep --color=always"
     alias ls="ls --color=always"
+
+    # Useful aliases
+    alias g="git"
+    alias ga="git add"
+    alias gc="git commit"
+    alias gd="git diff"
+    alias gs="git status" # May conflict with GhostScript
 end
