@@ -7,6 +7,10 @@ if status --is-login
     end
 
     set -lx SHELL /usr/bin/fish
+
+    # Colorized man pages
+    set -xU MANPAGER 'less -R --use-color -Dd+r -Du+b'
+    set -xU MANROFFOPT '-P -c'
 end
 
 if status --is-interactive
@@ -25,4 +29,10 @@ if status --is-interactive
     if command -q keychain
         keychain $quiet --noinherit --eval $git_ssh_key $gpg_key | source
     end
+
+    # Some colorized command outputs
+    alias ip="ip -color=always"
+    alias diff="diff --color=always"
+    alias grep="grep --color=always"
+    alias ls="ls --color=always"
 end
