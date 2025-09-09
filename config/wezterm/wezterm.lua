@@ -16,19 +16,19 @@ local function get_color_scheme()
 end
 
 config.font = wezterm.font_with_fallback({
-    'JetBrainsMono Nerd Font',
-    'Liberation Mono',
-    'Apple Color Emoji',
-    'Noto Color Emoji',
+    {
+        family = 'JetBrainsMono Nerd Font',
+        weight = 'Regular',
+    },
 })
-config.font_size = 12.0
+config.font_size = 12
 config.color_scheme = get_color_scheme()
 config.hide_tab_bar_if_only_one_tab = true
 config.initial_rows = 27
 config.initial_cols = 80
 config.default_cursor_style = 'BlinkingBlock'
 config.animation_fps = 144
-config.cursor_blink_rate = 380
+config.cursor_blink_rate = 600
 config.window_close_confirmation = 'NeverPrompt'
 config.audible_bell = 'Disabled'
 
