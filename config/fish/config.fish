@@ -19,16 +19,17 @@ if status --is-interactive
 
     # If keychain initialized the agents and added the keys previously, then
     # run in `quiet` mode.
-    if keychain_started
-        set quiet "--quiet"
-    end
-
-    set git_ssh_key github_tinyblk
-    set gpg_key 5508FAC9F03AF83F
-
-    if command -q keychain
-        keychain $quiet --noinherit --eval $git_ssh_key $gpg_key | source
-    end
+    # if keychain_started
+    #     set quiet "--quiet"
+    # end
+    #
+    # set git_ssh_key github_tinyblk
+    # set id_ssh_key luiz@tinyblk
+    # set gpg_key 5508FAC9F03AF83F
+    #
+    # if command -q keychain
+    #     keychain $quiet --eval --ssh-allow-forwarded $git_ssh_key $id_ssh_key $gpg_key | source
+    # end
 
     # Some colorized command outputs
     alias ip="ip -color=always"
@@ -43,3 +44,7 @@ if status --is-interactive
     alias gd="git diff"
     alias gs="git status" # May conflict with GhostScript
 end
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/luiz/.local/bin" $PATH
