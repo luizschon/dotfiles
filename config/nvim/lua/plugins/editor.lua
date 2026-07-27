@@ -3,7 +3,7 @@ return {
     {
         'folke/which-key.nvim',
         event = 'VimEnter',
-        config = function ()
+        config = function()
             local which_key = require('which-key')
             which_key.setup()
 
@@ -27,7 +27,7 @@ return {
             {
                 'nvim-telescope/telescope-fzf-native.nvim',
                 build = 'make',
-                cond = function ()
+                cond = function()
                     return vim.fn.executable('make') == 1
                 end,
             },
@@ -37,7 +37,7 @@ return {
                 enabled = vim.g.have_nerd_font,
             },
         },
-        config = function ()
+        config = function()
             require('telescope').setup({
                 defaults = {
                     mappings = {
@@ -66,13 +66,13 @@ return {
             vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch recent files ("." for repeat)' })
             vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[  ] Find existing buffers' })
 
-            vim.keymap.set('n', '<leader>/', function ()
+            vim.keymap.set('n', '<leader>/', function()
                 builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
                     previewer = false,
                 }))
             end, { desc = '[/] Fuzzily search in current buffer' })
 
-            vim.keymap.set('n', '<leader>sn', function ()
+            vim.keymap.set('n', '<leader>sn', function()
                 builtin.find_files({ cwd = vim.fn.stdpath('config') })
             end, { desc = '[S]earch [N]eovim files' })
         end,
