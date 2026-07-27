@@ -31,5 +31,6 @@ config.animation_fps = 144
 config.cursor_blink_rate = 600
 config.window_close_confirmation = 'NeverPrompt'
 config.audible_bell = 'Disabled'
+config.enable_wayland = false
 
 return config

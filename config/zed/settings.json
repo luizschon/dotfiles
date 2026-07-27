@@ -7,23 +7,13 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+  "format_on_save": "on",
   "show_edit_predictions": false,
   "edit_predictions": {
-    "mode": "subtle",
-    "copilot": {
-      "proxy": null,
-      "proxy_no_verify": null
-    },
-    "enabled_in_assistant": false
+    "mode": "subtle"
   },
-  "icon_theme": "Colored Zed Icons Theme Dark",
   "tab_bar": {
     "show": true
-  },
-  "theme": {
-    "mode": "system",
-    "light": "One Light",
-    "dark": "Ayu Dark"
   },
   "telemetry": {
     "diagnostics": false,
