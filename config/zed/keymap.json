@@ -8,7 +8,14 @@
 [
   {
     "context": "Workspace",
-    "bindings": {}
+    "bindings": {},
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-q": "terminal_panel::ToggleFocus",
+      "ctrl-shift-q": "terminal_panel::Toggle",
+    },
   },
   {
     "context": "Editor && vim_mode == normal",
@@ -17,21 +24,19 @@
       "space f t": "tab_switcher::Toggle",
       "space f s": "project_symbols::Toggle",
       "space f p": "projects::OpenRecent",
-      "space t": "terminal_panel::ToggleFocus"
-    }
+      "space t": "terminal_panel::ToggleFocus",
+    },
   },
   {
     "context": "TabSwitcher",
     "bindings": {
       "j": ["workspace::SendKeystrokes", "down"],
-      "k": ["workspace::SendKeystrokes", "up"]
-    }
+      "k": ["workspace::SendKeystrokes", "up"],
+    },
   },
   {
-    "context": "Terminal",
-    "bindings": {
-      "escape": "terminal_panel::ToggleFocus",
-      "ctrl-e": "workspace::ToggleRightDock"
-    }
-  }
+    "unbind": {
+      "ctrl-q": "zed::Quit",
+    },
+  },
 ]

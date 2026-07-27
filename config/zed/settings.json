@@ -7,42 +7,115 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "format_on_save": "on",
   "show_edit_predictions": false,
+  "format_on_save": "on",
+  "agent": {
+    "default_model": {
+      "provider": "google",
+      "model": "gemini-3.1-flash-lite",
+      "enable_thinking": true,
+      "effort": "minimal",
+    },
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "agent_servers": {
+    "gemini": {
+      "type": "registry",
+    },
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "cli_default_open_behavior": "new_window",
   "edit_predictions": {
-    "mode": "subtle"
+    "mode": "subtle",
   },
   "tab_bar": {
-    "show": true
+    "show": true,
+  },
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_size": 15,
+  "ui_font_size": 16,
+  "vim_mode": true,
+  "middle_click_paste": false,
+  "max_tabs": 5,
+  "proxy": "",
+  "icon_theme": "Colored Zed Icons Theme Dark",
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark Pro",
+  },
+  "terminal": {
+    "blinking": "on",
+    "keep_selection_on_copy": false,
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_fallbacks": [".ZedMono"],
+    "dock": "right",
+  },
+  "tabs": {
+    "show_diagnostics": "all",
+    "file_icons": true,
+  },
+  "status_bar": {
+    "show_active_file": true,
+  },
+  "project_panel": {
+    "indent_size": 24.0,
+    "dock": "left",
+  },
+  "calls": {
+    "mute_on_join": true,
   },
   "telemetry": {
-    "diagnostics": false,
-    "metrics": false
+    "diagnostics": true,
+    "metrics": false,
   },
-  "vim_mode": true,
-  "ui_font_size": 16,
-  "buffer_font_size": 16,
-  "use_autoclose": true,
-  "use_auto_surround": true,
+
+  // LSP configurations
   "lsp": {
     "discord_presence": {
       "initialization_options": {
-        // Base url for all language icons
+        // Application ID for the rich presence (don't touch it unless you know what you're doing)
+        "application_id": "1263505205522337886",
+        // Base URL for all language icons
         "base_icons_url": "https://raw.githubusercontent.com/xhyrom/zed-discord-presence/main/assets/icons/",
+
         "state": "Working on {filename}",
         "details": "In {workspace}",
-        // URL for large image
-        "large_image": "{base_icons_url}/{language}.png",
-        "large_text": "{language:u}", // :u makes first letter upper-case
-        // URL for small image
+        // URL for the large image
+        "large_image": "{base_icons_url}/{language:lo}.png", // :lo lowercase the language name
+        "large_text": "{language:u}", // :u capitalizes the first letter
+        // URL for the small image
         "small_image": "{base_icons_url}/zed.png",
         "small_text": "Zed",
-        "git_integration": true
-      }
-    }
+
+        // Idle settings - when you're inactive
+        "idle": {
+          "timeout": 600, // Idle timeout in seconds (300 seconds = 5 minutes)
+
+          // Action to take when idle
+          // `change_activity` - changes the activity to idle with the following details
+          // `clear_activity` - clears the activity (hides it)
+          "action": "change_activity",
+
+          "state": "Idling",
+          "details": "In Zed",
+          "large_image": "{base_icons_url}/zed.png",
+          "large_text": "Zed",
+          "small_image": "{base_icons_url}/idle.png",
+          "small_text": "Idle",
+        },
+
+        // Rules to disable presence in specific workspaces
+        "rules": {
+          "mode": "blacklist", // Can also be "whitelist"
+          // "paths": ["absolute path"],
+        },
+
+        "git_integration": true,
+      },
+    },
   },
-  "terminal": {
-    "dock": "right",
-    "font_family": "JetBrainsMono Nerd Font"
-  }
 }
