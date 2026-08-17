@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -393,7 +393,7 @@ do
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'tokyonight-moon'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -695,7 +695,9 @@ do
     -- clangd = {},
     -- gopls = {},
     -- pyright = {},
-    -- rust_analyzer = {},
+    rust_analyzer = {},
+    bashls = {},
+    zls = {},
     --
     -- Some languages (like typescript) have entire language plugins that can be useful:
     --    https://github.com/pmizio/typescript-tools.nvim
@@ -786,7 +788,8 @@ do
       -- You can specify filetypes to autoformat on save here:
       local enabled_filetypes = {
         -- lua = true,
-        -- python = true,
+        python = true,
+        rust = true,
       }
       if enabled_filetypes[vim.bo[bufnr].filetype] then
         return { timeout_ms = 500 }
@@ -856,6 +859,9 @@ do
       --
       -- See `:help blink-cmp-config-keymap` for defining your own keymap
       preset = 'default',
+
+      -- Open completion menu if its hidden
+      ['<C-space>'] = { 'show', 'fallback' },
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -972,7 +978,7 @@ do
   -- require 'kickstart.plugins.debug'
   -- require 'kickstart.plugins.indent_line'
   -- require 'kickstart.plugins.lint'
-  -- require 'kickstart.plugins.autopairs'
+  require 'kickstart.plugins.autopairs'
   -- require 'kickstart.plugins.neo-tree'
   -- require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
